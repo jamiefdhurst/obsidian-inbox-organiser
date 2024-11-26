@@ -1,0 +1,80 @@
+body {
+  --inorg-background-color: var(--background-secondary);
+  --inorg-foreground-color: var(--text-normal);
+  --inorg-border-color: var(--background-modifier-border);
+  --inorg-border-color-hover: var(--background-modifier-border-hover);
+  --inorg-font-size: 16px;
+}
+
+.theme-dark {
+  --inorg-even-background-color: #00000048;
+}
+
+.theme-light {
+  --inorg-even-background-color: #cfcfcf48;
+}
+
+.modal:has(.inorg-container) {
+  width: 75%;
+  max-width: 1920px;
+  height: 50%;
+  max-height: 1080px;
+  background-color: var(--inorg-background-color);
+  color: var(--inorg-foreground-color);
+}
+
+.inorg-container {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  min-height: 100%;
+  padding: 1em;
+}
+
+.inorg-files table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--background-primary);
+  border: 1px solid var(--dn-border-color);
+  font-size: 1em;
+}
+
+.inorg-files th,
+.inorg-files td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: var(--size-4-1) var(--size-4-2);
+  min-width: 50px;
+  font-size: var(--dn-font-size);
+}
+
+.inorg-files th {
+  border-bottom: 1px solid var(--dn-border-color);
+  position: sticky;
+  top: 0;
+  z-index: 901;
+  text-align: left;
+  font-weight: var(--font-semibold);
+  color: var(--text-normal);
+  background-color: var(--background-primary);
+}
+
+.inorg-files th:nth-child(2) {
+  max-width: 250px;
+  min-width: 250px;
+  width: 250px;
+}
+
+.inorg-files tr:hover td {
+  background-color: var(--nav-item-background-hover) !important;
+}
+
+.inorg-files tbody tr:nth-child(even) {
+  background-color: var(--inorg-even-background-color);
+}
+
+.inorg-files select {
+  width: 100%;
+}

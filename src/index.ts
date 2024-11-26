@@ -20,7 +20,7 @@ export default class InboxOrganiser extends Plugin {
     super(app, manifest);
     this.watcher = new Watcher(this, app.fileManager);
     this.inbox = new Inbox(this.app.vault);
-    this.modal = new OrganiserModal(this.app);
+    this.modal = new OrganiserModal(this.app, this.inbox);
   }
   
   async onload(): Promise<void> {
@@ -44,6 +44,14 @@ export default class InboxOrganiser extends Plugin {
     (new OrganiserNotice(this, this.modal, this.inbox)).display();
 
     this.addSettingTab(new InboxOrganiserTab(this.app, this));
+
+    this.addCommand({
+			id: 'inbox-organiser',
+			name: 'Organise inbox',
+			callback: () => {
+				this.modal.open();
+			}
+		});
   }
 
   getSettings(): ISettings {
