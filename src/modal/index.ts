@@ -2,12 +2,15 @@ import { App, Modal, TFile, TFolder } from 'obsidian';
 import { Inbox } from 'src/inbox';
 
 const CLS_PREFIX: string = 'inorg-';
+const SELECT_ATTR_FILE: string = 'data-file-name';
 
 export class OrganiserModal extends Modal {
   private inbox: Inbox;
   private files: TFile[];
   private folders: TFolder[];
 
+  private fileTableBody: HTMLTableSectionElement;
+  private fileRowEls: Map<string, HTMLTableRowElement> = new Map();
   private moveSelectEls: HTMLSelectElement[] = [];
 
   constructor(app: App, inbox: Inbox) {
@@ -43,19 +46,21 @@ export class OrganiserModal extends Modal {
     const theadTr = thead.createEl('tr');
     theadTr.createEl('th', { text: 'Name' });
     theadTr.createEl('th', { text: 'Move to...' });
-    const tbody = table.createEl('tbody');
+    this.fileTableBody = table.createEl('tbody');
 
     for (const file of this.files) {
-      const fileTr = tbody.createEl('tr');
+      const fileTr = this.fileTableBody.createEl('tr');
       fileTr.createEl('td', { text: file.name });
       const moveTd = fileTr.createEl('td');
       const moveSelect = moveTd.createEl('select', { cls: `${CLS_PREFIX}dropdown`});
-      moveSelect.addEventListener('change', (event: MouseEvent) => this.moveSingleFile(event));
       moveSelect.createEl('option', { text: 'Choose folder...' });
       for (const folder of this.folders) {
         moveSelect.createEl('option', { text: this.getFolderPathForDisplay(folder), value: folder.path });
       }
+      moveSelect.setAttribute(SELECT_ATTR_FILE, file.name);
+      moveSelect.addEventListener('change', (event: MouseEvent) => this.moveSingleFile(event));
       this.moveSelectEls.push(moveSelect);
+      this.fileRowEls.set(file.name, fileTr);
     }
   }
 
@@ -74,8 +79,23 @@ export class OrganiserModal extends Modal {
     return `${folder.name} (${parentNames.reverse().join(' > ')})`;
   }
 
-  moveSingleFile(event: MouseEvent): void {
-    console.log(event.target);
+  async moveSingleFile(event: MouseEvent): Promise<void> {
+    const moveSelectEl = event.target as HTMLSelectElement;
+    const fileName = moveSelectEl.getAttribute(SELECT_ATTR_FILE) as string;
+    const file = this.files.find(f => f.name === fileName);
+    if (file === undefined) {
+      return;
+    }
+
+    await this.inbox.move(file, moveSelectEl.value);
+
+    this.moveSelectEls.remove(moveSelectEl);
+    this.fileRowEls.get(fileName)?.remove();
+    this.fileRowEls.delete(fileName);
+
+    if (this.fileRowEls.size === 0) {
+      this.close();
+    }
   }
 
   onClose() {
