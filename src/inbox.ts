@@ -22,4 +22,8 @@ export class Inbox {
 
     return folders.filter(folder => folder.path !== INBOX_FOLDER);
   }
+
+  async move(file: TFile, path: string): Promise<void> {
+    return this.vault.rename(file, `${path}/${file.name}`);
+  }
  }
