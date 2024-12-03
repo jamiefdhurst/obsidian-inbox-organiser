@@ -1,11 +1,11 @@
-import { Notice, Plugin, TFile, type App, type PluginManifest } from 'obsidian';
+import { Plugin, TFile, type App, type PluginManifest } from 'obsidian';
 import { SETTINGS_UPDATED } from './events';
+import { Inbox } from './inbox';
+import { OrganiserModal } from './modal';
+import { OrganiserNotice } from './notice';
 import { DEFAULT_SETTINGS, ISettings } from './settings';
 import { InboxOrganiserTab } from './settings/tab';
 import { Watcher } from './watcher';
-import { OrganiserNotice } from './notice';
-import { OrganiserModal } from './modal';
-import { Inbox } from './inbox';
 
 export const INBOX_FOLDER = 'inbox';
 
@@ -14,7 +14,6 @@ export default class InboxOrganiser extends Plugin {
   private watcher: Watcher;
   private inbox: Inbox;
   private modal: OrganiserModal;
-  private notice: OrganiserNotice;
 
   constructor(app: App, manifest: PluginManifest) {
     super(app, manifest);

@@ -1,6 +1,6 @@
 import { type App, PluginSettingTab, Setting } from 'obsidian';
-import InboxOrganiser from 'src';
 import { ISettings, type Period } from '.';
+import InboxOrganiser from '..';
 
 export class InboxOrganiserTab extends PluginSettingTab {
   private plugin: InboxOrganiser;

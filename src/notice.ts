@@ -1,8 +1,8 @@
-import { moment, Notice } from 'obsidian';
-import InboxOrganiser from 'src';
-import { OrganiserModal } from './modal';
-import { Inbox } from './inbox';
 import { type Moment } from 'moment';
+import { moment, Notice } from 'obsidian';
+import InboxOrganiser from '.';
+import { Inbox } from './inbox';
+import { OrganiserModal } from './modal';
 
 export class OrganiserNotice {
   private plugin: InboxOrganiser;
