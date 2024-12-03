@@ -8,67 +8,139 @@ body {
 
 .theme-dark {
   --inorg-even-background-color: #00000048;
+  --inorg-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23f1f1f1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E");
+  --inorg-search-background-color: var(--background-primary);
 }
 
 .theme-light {
   --inorg-even-background-color: #cfcfcf48;
+  --inorg-search-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E");
+  --inorg-search-background-color: #fff;
 }
 
 .modal:has(.inorg-container) {
-  width: 75%;
-  max-width: 1920px;
-  height: 50%;
-  max-height: 1080px;
   background-color: var(--inorg-background-color);
   color: var(--inorg-foreground-color);
+  height: 50%;
+  max-height: 1080px;
+  max-width: 1920px;
+  width: 75%;
 }
 
 .inorg-container {
-  width: 100%;
-  max-width: 100%;
   height: 100%;
+  max-width: 100%;
   min-height: 100%;
   padding: 1em;
+  width: 100%;
+}
+
+.inorg-search {
+  height: var(--input-height);
+  position: relative;
+  width: 50%;
+  z-index: 9900;
+}
+
+.inorg-search .search-input-clear-button {
+  top: calc(var(--input-height) / 4);
+  z-index: 9901;
+}
+
+.inorg-search input {
+  background-color: var(--inorg-search-background-color);
+  background-image: var(--inorg-search-icon);
+  background-position: 8px 6px;
+  background-repeat: no-repeat;
+  border: 1px solid var(--inorg-border-color);
+  border-radius: var(--input-radius);
+  font-size: var(--font-size);
+  height: var(--input-height);
+  margin-top: var(--size-4-1);
+  padding: 8px 18px 6px 32px;
+  width: 100%;
+}
+
+.inorg-top {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: var(--size-4-1);
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: var(--size-4-1);
+}
+
+.inorg-top label {
+  padding-left: var(--size-4-2)
+}
+
+.inorg-top label > * {
+  vertical-align: middle;
+}
+
+.inorg-top button {
+  margin: var(--size-4-2) 0;
+  margin-left: var(--size-4-2);
 }
 
 .inorg-files table {
+  background-color: var(--background-primary);
+  border: 1px solid var(--inorg-border-color);
+  border-collapse: collapse;
+  font-size: 1em;
   table-layout: fixed;
   width: 100%;
-  border-collapse: collapse;
-  background-color: var(--background-primary);
-  border: 1px solid var(--dn-border-color);
-  font-size: 1em;
 }
 
 .inorg-files th,
 .inorg-files td {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  padding: var(--size-4-1) var(--size-4-2);
+  font-size: var(--inorg-font-size);
   min-width: 50px;
-  font-size: var(--dn-font-size);
+  overflow: hidden;
+  padding: var(--size-4-1) var(--size-4-2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .inorg-files th {
-  border-bottom: 1px solid var(--dn-border-color);
+  background-color: var(--background-primary);
+  border-bottom: 1px solid var(--inorg-border-color);
+  color: var(--text-normal);
+  font-weight: var(--font-semibold);
   position: sticky;
+  text-align: left;
   top: 0;
   z-index: 901;
-  text-align: left;
-  font-weight: var(--font-semibold);
-  color: var(--text-normal);
-  background-color: var(--background-primary);
 }
 
-.inorg-files th:nth-child(2) {
+.inorg-files th:nth-child(1),
+.inorg-files tr > td:nth-child(1) {
+  line-height: var(--inorg-font-size);
+  max-width: 30px;
+  min-width: 30px;
+  width: 30px;
+}
+
+.inorg-files th:nth-child(3) {
   max-width: 250px;
   min-width: 250px;
   width: 250px;
 }
 
-.inorg-files tr:hover td {
+.inorg-files tr:hover > td {
   background-color: var(--nav-item-background-hover) !important;
+}
+
+.inorg-files tr.selected > td {
+  background-color: var(--table-selection);
+}
+
+.inorg-files tr.hidden > td {
+  display: none;
 }
 
 .inorg-files tbody tr:nth-child(even) {
