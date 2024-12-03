@@ -14,7 +14,7 @@ export class Inbox {
       return [];
     }
 
-    return folder?.children.filter(child => child instanceof TFile);
+    return folder?.children.sort().filter(child => child instanceof TFile);
   }
 
   getFolders(): TFolder[] {

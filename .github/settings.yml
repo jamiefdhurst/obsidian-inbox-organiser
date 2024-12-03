@@ -2,7 +2,7 @@ repository:
   name: obsidian-inbox-organiser
   description: Obsidian plugin to capture any new notes into an inbox and periodically prompt to organise these into other folders within the vault.
   topics: obsidian, typescript, plugin, notes, pkm
-  private: true
+  private: false
   has_issues: true
   has_projects: false
   has_wiki: false
