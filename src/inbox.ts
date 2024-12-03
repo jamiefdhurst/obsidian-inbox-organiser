@@ -1,5 +1,5 @@
 import { TFile, TFolder, Vault } from 'obsidian';
-import { INBOX_FOLDER } from 'src';
+import { INBOX_FOLDER } from '.';
 
 export class Inbox {
   private vault: Vault;
