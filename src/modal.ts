@@ -1,5 +1,5 @@
 import { App, debounce, Modal, TFile, TFolder } from 'obsidian';
-import { Inbox } from '../inbox';
+import { Inbox } from './inbox';
 
 const CLS_PREFIX: string = 'inorg-';
 
