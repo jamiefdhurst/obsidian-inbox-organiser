@@ -1,7 +1,7 @@
-import { App, debounce, Modal, TFile, TFolder } from 'obsidian';
-import { Inbox } from '../inbox';
+import { App, Modal, TFile, TFolder } from 'obsidian';
+import { Inbox } from './inbox';
 
-const CLS_PREFIX: string = 'inorg-';
+export const CLS_PREFIX: string = 'inorg-';
 
 export class OrganiserModal extends Modal {
   private inbox: Inbox;
@@ -54,9 +54,9 @@ export class OrganiserModal extends Modal {
     this.searchInputEl = searchContainerEl.createEl('input', { type: 'search', placeholder: 'Search...' });
     this.searchInputEl.spellcheck = false;
     this.searchInputEl.focus();
-    this.searchInputEl.addEventListener('input', debounce(() => this.handleSearch(this.searchInputEl.value), 300, true));
+    this.searchInputEl.addEventListener('input', () => this.handleSearch(this.searchInputEl.value));
 
-    searchContainerEl.createEl('div', { cls: 'search-input-clear-button' }).onClickEvent(() => {
+    searchContainerEl.createEl('div', { cls: 'search-input-clear-button' }).addEventListener('click', () => {
       this.searchInputEl.value = '';
       this.searchInputEl.focus();
       this.handleSearch(this.searchInputEl.value);
@@ -80,7 +80,7 @@ export class OrganiserModal extends Modal {
     this.multiSelectFolderEl.setAttribute('disabled', 'disabled');
     this.multiSelectSaveEl = topNavRightEl.createEl('button', { cls: 'mod-cta', text: 'Move selected' });
     this.multiSelectSaveEl.setAttribute('disabled', 'disabled');
-    this.multiSelectSaveEl.onClickEvent(() => {
+    this.multiSelectSaveEl.addEventListener('click', () => {
       if (this.multiSelectFolderEl.value) {
         this.handleMoveMultipleFiles(this.multiSelectFolderEl.value);
       }
@@ -110,8 +110,9 @@ export class OrganiserModal extends Modal {
       this.fileRowSelectEls.set(file.name, selectEl);
 
       const fileNameTd = fileTrEl.createEl('td', { text: file.name });
-      fileNameTd.onClickEvent((event: MouseEvent) => {
-        selectEl.click();
+      fileNameTd.addEventListener('click', (event: MouseEvent) => {
+        selectEl.checked = !selectEl.checked;
+        selectEl.dispatchEvent(new Event('change'));
         event.stopPropagation();
       });
 
@@ -136,20 +137,6 @@ export class OrganiserModal extends Modal {
     return folderSelectEl;
   }
 
-  handleSearch(query: string): void {
-    [...this.fileRowEls.entries()].forEach(([fileName, row]) => {
-      const fileNameSearch = fileName.toLowerCase();
-      if ((query === '' || fileNameSearch.contains(query)) && row.className.contains('hidden')) {
-        row.className = '';
-      } else if (!fileNameSearch.contains(query)) {
-        if (row.className.contains('selected')) {
-          this.handleToggleSelect(fileName, false);
-        }
-        row.className = 'hidden';
-      }
-    }); 
-  }
-
   getFolderPathForDisplay(folder: TFolder): string {
     if (folder.parent?.path === '/') {
       return folder.name;
@@ -163,6 +150,20 @@ export class OrganiserModal extends Modal {
     }
 
     return `${folder.name} (${parentNames.reverse().join(' > ')})`;
+  }
+
+  handleSearch(query: string): void {
+    [...this.fileRowEls.entries()].forEach(([fileName, row]) => {
+      const fileNameSearch = fileName.toLowerCase();
+      if ((query === '' || fileNameSearch.contains(query)) && row.className.contains('hidden')) {
+        row.className = '';
+      } else if (!fileNameSearch.contains(query)) {
+        if (row.className.contains('selected')) {
+          this.handleToggleSelect(fileName, false);
+        }
+        row.className = 'hidden';
+      }
+    }); 
   }
 
   handleToggleSelect(fileName: string, selected: boolean): void {
