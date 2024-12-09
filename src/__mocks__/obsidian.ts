@@ -1,3 +1,6 @@
+import * as momentImpl from 'moment';
+
+export const moment = momentImpl;
 export class Plugin {}
 export class PluginSettingTab {}
 export class Modal {
@@ -23,3 +26,51 @@ export class FileManager {
   async renameFile(file: TAbstractFile, newPath: string): Promise<void> {}
 }
 export class AbstractInputSuggest<T> {};
+export const Notice = jest.fn();
+class BaseComponent {
+  onChange(cb: (val: any) => any): this {
+    return this;
+  }
+  setDisabled(b: boolean): this {
+    return this;
+  }
+  setValue(s: string): this {
+    return this;
+  }
+}
+export class DropdownComponent extends BaseComponent {
+  addOptions(o: Record<string, string>): this {
+    return this;
+  }
+}
+export class ToggleComponent extends BaseComponent {}
+export class Setting {
+  public containerEl: HTMLElement;
+
+  constructor(el: HTMLElement) {
+    this.containerEl = el;
+    return this;
+  }
+
+  setDesc(s: string) {
+    return this;
+  }
+
+  setHeading(s: string) {
+    return this;
+  }
+
+  setName(s: string) {
+    return this;
+  }
+
+  addDropdown(cb: (dropdown: DropdownComponent) => any) {
+    cb(new DropdownComponent());
+    return this;
+  }
+
+  addToggle(cb: (toggle: ToggleComponent) => any) {
+    cb(new ToggleComponent());
+    return this;
+  }
+}

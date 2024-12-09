@@ -1,9 +1,9 @@
 import { FileManager, TFile } from 'obsidian';
 import InboxOrganiser from '..';
-import { Watcher } from '../watcher';
 import { ISettings } from '../settings';
+import { Watcher } from '../watcher';
 
-describe('watcher', () => {
+describe('Watcher', () => {
 
   let sut: Watcher;
 
