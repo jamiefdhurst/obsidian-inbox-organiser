@@ -2,7 +2,7 @@ import { TFile, TFolder, Vault } from 'obsidian';
 import { INBOX_FOLDER } from '..';
 import { Inbox } from '../inbox';
 
-describe('inbox', () => {
+describe('Inbox', () => {
 
   let sut: Inbox;
 

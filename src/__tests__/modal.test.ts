@@ -2,7 +2,9 @@ import { App, TFile, TFolder } from 'obsidian';
 import { Inbox } from '../inbox';
 import { CLS_PREFIX, OrganiserModal } from '../modal';
 
-describe('modal', () => {
+const WAIT_TIME: number = 20;
+
+describe('OrganiserModal', () => {
 
   let sut: OrganiserModal;
 
@@ -93,7 +95,7 @@ describe('modal', () => {
     // Set search
     searchInputEl.value = '_1';
     searchInputEl.dispatchEvent(new Event('input'));
-    await new Promise(r => setTimeout(r, 150));
+    await new Promise(r => setTimeout(r, WAIT_TIME));
 
     expect(tableEl.children[1].children[0].className).not.toContain('hidden');
     expect(tableEl.children[1].children[1].className).toContain('hidden');
@@ -101,7 +103,7 @@ describe('modal', () => {
     // Reset
     searchInputEl.value = '';
     searchInputEl.dispatchEvent(new Event('input'));
-    await new Promise(r => setTimeout(r, 150));
+    await new Promise(r => setTimeout(r, WAIT_TIME));
 
     expect(tableEl.children[1].children[0].className).not.toContain('hidden');
     expect(tableEl.children[1].children[1].className).not.toContain('hidden');
@@ -109,10 +111,10 @@ describe('modal', () => {
     // Select and then filter
     tableEl.children[1].children[0].children[1].dispatchEvent(new Event('click'));
     tableEl.children[1].children[1].children[1].dispatchEvent(new Event('click'));
-    await new Promise(r => setTimeout(r, 150));
+    await new Promise(r => setTimeout(r, WAIT_TIME));
     searchInputEl.value = '_1';
     searchInputEl.dispatchEvent(new Event('input'));
-    await new Promise(r => setTimeout(r, 150));
+    await new Promise(r => setTimeout(r, WAIT_TIME));
 
     expect(tableEl.children[1].children[0].className).not.toContain('hidden');
     expect(tableEl.children[1].children[0].className).toContain('selected');
@@ -121,7 +123,7 @@ describe('modal', () => {
 
     // Clear button
     sut.contentEl.find(`.search-input-clear-button`).dispatchEvent(new Event('click'));
-    await new Promise(r => setTimeout(r, 150));
+    await new Promise(r => setTimeout(r, WAIT_TIME));
 
     expect(searchInputEl.value).toEqual('');
     expect(tableEl.children[1].children[0].className).not.toContain('hidden');
@@ -138,13 +140,13 @@ describe('modal', () => {
     const tableEl = sut.contentEl.find(`.${CLS_PREFIX}files table`);
     
     tableEl.children[1].children[0].children[1].dispatchEvent(new Event('click'));
-    await new Promise(r => setTimeout(r, 150));
+    await new Promise(r => setTimeout(r, WAIT_TIME));
 
     expect(topEl.children[1].children[0].getAttribute('disabled')).toEqual(null);
     expect(topEl.children[1].children[1].getAttribute('disabled')).toEqual(null);
 
     tableEl.children[1].children[0].children[1].dispatchEvent(new Event('click'));
-    await new Promise(r => setTimeout(r, 150));
+    await new Promise(r => setTimeout(r, WAIT_TIME));
 
     expect(topEl.children[1].children[0].getAttribute('disabled')).toEqual('disabled');
     expect(topEl.children[1].children[1].getAttribute('disabled')).toEqual('disabled');
@@ -161,14 +163,14 @@ describe('modal', () => {
 
     (topEl.children[0].children[0].children[0] as HTMLInputElement).checked = true;
     topEl.children[0].children[0].children[0].dispatchEvent(new Event('change'));
-    await new Promise(r => setTimeout(r, 150));
+    await new Promise(r => setTimeout(r, WAIT_TIME));
 
     expect((tableEl.children[1].children[0].children[0].children[0] as HTMLInputElement).checked).toEqual(true);
     expect((tableEl.children[1].children[1].children[0].children[0] as HTMLInputElement).checked).toEqual(true);
 
     (topEl.children[0].children[0].children[0] as HTMLInputElement).checked = false;
     topEl.children[0].children[0].children[0].dispatchEvent(new Event('change'));
-    await new Promise(r => setTimeout(r, 150));
+    await new Promise(r => setTimeout(r, WAIT_TIME));
 
     expect((tableEl.children[1].children[0].children[0].children[0] as HTMLInputElement).checked).toEqual(false);
     expect((tableEl.children[1].children[1].children[0].children[0] as HTMLInputElement).checked).toEqual(false);
@@ -183,7 +185,7 @@ describe('modal', () => {
 
     const tableEl = sut.contentEl.find(`.${CLS_PREFIX}files table`);
     tableEl.children[1].children[0].children[2].children[0].dispatchEvent(new Event('change'));
-    await new Promise(r => setTimeout(r, 150));
+    await new Promise(r => setTimeout(r, WAIT_TIME));
 
     expect(inboxMove).not.toHaveBeenCalled();
     expect(tableEl.children[1].children.length).toEqual(2);
@@ -201,7 +203,7 @@ describe('modal', () => {
     const tableEl = sut.contentEl.find(`.${CLS_PREFIX}files table`);
     (tableEl.children[1].children[0].children[2].children[0] as HTMLSelectElement).value = '/Level One';
     tableEl.children[1].children[0].children[2].children[0].dispatchEvent(new Event('change'));
-    await new Promise(r => setTimeout(r, 150));
+    await new Promise(r => setTimeout(r, WAIT_TIME));
 
     expect(inboxMove).toHaveBeenCalledWith(expectedFile, '/Level One');
     expect(tableEl.children[1].children.length).toEqual(1);
@@ -222,12 +224,12 @@ describe('modal', () => {
 
     (topEl.children[0].children[0].children[0] as HTMLInputElement).checked = true;
     topEl.children[0].children[0].children[0].dispatchEvent(new Event('change'));
-    await new Promise(r => setTimeout(r, 150));
+    await new Promise(r => setTimeout(r, WAIT_TIME));
 
     (topEl.children[1].children[0] as HTMLSelectElement).value = '/Level One/Level Two';
     topEl.children[1].children[0].dispatchEvent(new Event('change'));
     topEl.children[1].children[1].dispatchEvent(new Event('click'));
-    await new Promise(r => setTimeout(r, 150));
+    await new Promise(r => setTimeout(r, WAIT_TIME));
 
     expect(inboxMove).toHaveBeenCalledWith(expectedFile1, '/Level One/Level Two');
     expect(inboxMove).toHaveBeenCalledWith(expectedFile2, '/Level One/Level Two');
