@@ -10,3 +10,4 @@ export class TFile extends TAbstractFile {
 export class FileManager {
   async renameFile(file: TAbstractFile, newPath: string): Promise<void> {}
 }
+export class AbstractInputSuggest<T> {};
