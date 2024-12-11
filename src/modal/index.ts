@@ -1,5 +1,6 @@
 import { App, debounce, Modal, TFile, TFolder } from 'obsidian';
 import { Inbox } from '../inbox';
+import { FolderSuggest } from './folder-suggest';
 
 const CLS_PREFIX: string = 'inorg-';
 
@@ -10,7 +11,7 @@ export class OrganiserModal extends Modal {
 
   private searchInputEl: HTMLInputElement;
   private multiSelectToggleEl: HTMLInputElement;
-  private multiSelectFolderEl: HTMLSelectElement;
+  private multiSelectFolderEl: HTMLInputElement;
   private multiSelectSaveEl: HTMLButtonElement;
   private fileTbodyEl: HTMLTableSectionElement;
   private fileRowEls: Map<string, HTMLTableRowElement>;
@@ -126,12 +127,9 @@ export class OrganiserModal extends Modal {
     }
   }
 
-  createFolderSelect(containerEl: HTMLElement): HTMLSelectElement {
-    const folderSelectEl = containerEl.createEl('select', { cls: `${CLS_PREFIX}dropdown`});
-    folderSelectEl.createEl('option', { text: 'Choose folder...', value: '' });
-    for (const folder of this.folders) {
-      folderSelectEl.createEl('option', { text: this.getFolderPathForDisplay(folder), value: folder.path });
-    }
+  createFolderSelect(containerEl: HTMLElement): HTMLInputElement {
+    const folderSelectEl = containerEl.createEl('input', { cls: `${CLS_PREFIX}dropdown`});
+    new FolderSuggest(this.app, this.folders, folderSelectEl);
 
     return folderSelectEl;
   }

@@ -18,7 +18,7 @@ export default class InboxOrganiser extends Plugin {
   constructor(app: App, manifest: PluginManifest) {
     super(app, manifest);
     this.watcher = new Watcher(this, app.fileManager);
-    this.inbox = new Inbox(this.app.vault);
+    this.inbox = new Inbox(app.vault, app.fileManager);
     this.modal = new OrganiserModal(this.app, this.inbox);
   }
   

@@ -1,11 +1,13 @@
-import { TFile, TFolder, Vault } from 'obsidian';
+import { FileManager, TFile, TFolder, Vault } from 'obsidian';
 import { INBOX_FOLDER } from '.';
 
 export class Inbox {
   private vault: Vault;
+  private fileManager: FileManager;
 
-  constructor(vault: Vault) {
+  constructor(vault: Vault, fileManager: FileManager) {
     this.vault = vault;
+    this.fileManager = fileManager;
   }
 
   getFiles(): TFile[] {
@@ -24,6 +26,6 @@ export class Inbox {
   }
 
   async move(file: TFile, path: string): Promise<void> {
-    return this.vault.rename(file, `${path}/${file.name}`);
+    return this.fileManager.renameFile(file, `${path}/${file.name}`);
   }
  }
