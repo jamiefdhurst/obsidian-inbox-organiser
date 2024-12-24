@@ -25,7 +25,11 @@ export class TFolder extends TAbstractFile {
 export class FileManager {
   async renameFile(file: TAbstractFile, newPath: string): Promise<void> {}
 }
-export class AbstractInputSuggest<T> {};
+export class AbstractInputSuggest<T> {
+  close(): void {
+    
+  }
+};
 export const Notice = jest.fn();
 class BaseComponent {
   onChange(cb: (val: any) => any): this {
