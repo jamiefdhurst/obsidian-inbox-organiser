@@ -1,4 +1,4 @@
-import { TFile, TFolder, Vault } from 'obsidian';
+import { FileManager, TFile, TFolder, Vault } from 'obsidian';
 import { INBOX_FOLDER } from '..';
 import { Inbox } from '../inbox';
 
@@ -7,14 +7,16 @@ describe('Inbox', () => {
   let sut: Inbox;
 
   let vault: Vault;
+  let fileManager: FileManager;
 
   beforeEach(() => {
     vault = jest.fn() as unknown as Vault;
     vault.getAllFolders = jest.fn();
     vault.getFolderByPath = jest.fn();
-    vault.rename = jest.fn();
+    fileManager = jest.fn() as unknown as FileManager;
+    fileManager.renameFile = jest.fn();
 
-    sut = new Inbox(vault);
+    sut = new Inbox(vault, fileManager);
   });
 
   it('returns empty when the inbox folder is not found', () => {
@@ -70,13 +72,13 @@ describe('Inbox', () => {
   });
 
   it('moves a file', async () => {
-    const vaultRename = jest.spyOn(vault, 'rename');
+    const fileManagerRename = jest.spyOn(fileManager, 'renameFile');
 
     const file = new TFile();
     file.name = 'example.md';
 
     await sut.move(file, 'some/new/path');
 
-    expect(vaultRename).toHaveBeenCalledWith(file, 'some/new/path/example.md');
+    expect(fileManagerRename).toHaveBeenCalledWith(file, 'some/new/path/example.md');
   });
 });

@@ -1,6 +1,6 @@
 import { App, TFile, TFolder } from 'obsidian';
-import { Inbox } from '../inbox';
-import { CLS_PREFIX, OrganiserModal } from '../modal';
+import { Inbox } from '../../inbox';
+import { CLS_PREFIX, OrganiserModal } from '../../modal';
 
 const WAIT_TIME: number = 20;
 
@@ -55,8 +55,7 @@ describe('OrganiserModal', () => {
     await sut.onOpen();
 
     const select = sut.contentEl.find(`.${CLS_PREFIX}top .${CLS_PREFIX}dropdown`);
-    expect(select).toBeInstanceOf(HTMLSelectElement);
-    expect(select.children.length).toEqual(1);
+    expect(select).toBeInstanceOf(HTMLInputElement);
 
     const table = sut.contentEl.find(`.${CLS_PREFIX}files table`);
     expect(table).toBeInstanceOf(HTMLTableElement);
@@ -70,11 +69,7 @@ describe('OrganiserModal', () => {
     await sut.onOpen();
 
     const selectEl = sut.contentEl.find(`.${CLS_PREFIX}top .${CLS_PREFIX}dropdown`);
-    expect(selectEl).toBeInstanceOf(HTMLSelectElement);
-    expect(selectEl.children.length).toEqual(4);
-    expect(selectEl.children[1].innerHTML).toEqual('Level One');
-    expect(selectEl.children[2].innerHTML).toEqual('Level Two (Level One)');
-    expect(selectEl.children[3].innerHTML).toEqual('Level Three (Level One &gt; Level Two)');
+    expect(selectEl).toBeInstanceOf(HTMLInputElement);
 
     const tableEl = sut.contentEl.find(`.${CLS_PREFIX}files table`);
     expect(tableEl).toBeInstanceOf(HTMLTableElement);
