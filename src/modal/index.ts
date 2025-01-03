@@ -46,6 +46,7 @@ export class OrganiserModal extends Modal {
     this.createFilter(mainContainerEl);
     this.createMultiSelect(mainContainerEl);
     this.createFileTable(mainContainerEl);
+    this.createFileTableRows();
     this.handleSearch('');
     this.handleToggleSelectMulti(false);
   }
@@ -98,7 +99,9 @@ export class OrganiserModal extends Modal {
     theadTrEl.createEl('th', { text: 'Name' });
     theadTrEl.createEl('th', { text: 'Move to...' });
     this.fileTbodyEl = tableEl.createEl('tbody');
+  }
 
+  createFileTableRows(): void {
     for (const file of this.files) {
       const fileTrEl = this.fileTbodyEl.createEl('tr');
 
@@ -134,22 +137,7 @@ export class OrganiserModal extends Modal {
 
     return folderSelectEl;
   }
-
-  getFolderPathForDisplay(folder: TFolder): string {
-    if (folder.parent?.path === '/') {
-      return folder.name;
-    }
-
-    const parentNames = [];
-    let parent: TFolder | null = folder.parent;
-    while (parent !== null && parent.path !== '/') {
-      parentNames.push(parent.name);
-      parent = parent.parent;
-    }
-
-    return `${folder.name} (${parentNames.reverse().join(' > ')})`;
-  }
-
+  
   handleSearch(query: string): void {
     [...this.fileRowEls.entries()].forEach(([fileName, row]) => {
       const fileNameSearch = fileName.toLowerCase();
@@ -199,12 +187,12 @@ export class OrganiserModal extends Modal {
     await this.inbox.move(file, path);
 
     this.files.remove(file);
-    this.fileRowEls.get(fileName)?.remove();
-    this.fileRowEls.delete(fileName);
-    this.fileRowSelectEls.delete(fileName);
 
-    if (this.fileRowEls.size === 0) {
+    if (this.files.length === 0) {
       this.close();
+    } else {
+      this.fileTbodyEl.empty();
+      this.createFileTableRows();
     }
   }
 

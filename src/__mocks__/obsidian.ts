@@ -8,6 +8,7 @@ export class Modal {
     this.onClose();
   }
   onClose() {}
+  open() {}
   setTitle(title: string) {
     return this;
   };
