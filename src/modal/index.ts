@@ -1,8 +1,8 @@
-import { App, debounce, Modal, TFile, TFolder } from 'obsidian';
+import { App, Modal, TFile, TFolder } from 'obsidian';
 import { Inbox } from '../inbox';
 import { FolderSuggest } from './folder-suggest';
 
-const CLS_PREFIX: string = 'inorg-';
+export const CLS_PREFIX: string = 'inorg-';
 
 export class OrganiserModal extends Modal {
   private inbox: Inbox;
@@ -46,6 +46,7 @@ export class OrganiserModal extends Modal {
     this.createFilter(mainContainerEl);
     this.createMultiSelect(mainContainerEl);
     this.createFileTable(mainContainerEl);
+    this.createFileTableRows();
     this.handleSearch('');
     this.handleToggleSelectMulti(false);
   }
@@ -55,9 +56,9 @@ export class OrganiserModal extends Modal {
     this.searchInputEl = searchContainerEl.createEl('input', { type: 'search', placeholder: 'Search...' });
     this.searchInputEl.spellcheck = false;
     this.searchInputEl.focus();
-    this.searchInputEl.addEventListener('input', debounce(() => this.handleSearch(this.searchInputEl.value), 300, true));
+    this.searchInputEl.addEventListener('input', () => this.handleSearch(this.searchInputEl.value));
 
-    searchContainerEl.createEl('div', { cls: 'search-input-clear-button' }).onClickEvent(() => {
+    searchContainerEl.createEl('div', { cls: 'search-input-clear-button' }).addEventListener('click', () => {
       this.searchInputEl.value = '';
       this.searchInputEl.focus();
       this.handleSearch(this.searchInputEl.value);
@@ -81,7 +82,7 @@ export class OrganiserModal extends Modal {
     this.multiSelectFolderEl.setAttribute('disabled', 'disabled');
     this.multiSelectSaveEl = topNavRightEl.createEl('button', { cls: 'mod-cta', text: 'Move selected' });
     this.multiSelectSaveEl.setAttribute('disabled', 'disabled');
-    this.multiSelectSaveEl.onClickEvent(() => {
+    this.multiSelectSaveEl.addEventListener('click', () => {
       if (this.multiSelectFolderEl.value) {
         this.handleMoveMultipleFiles(this.multiSelectFolderEl.value);
       }
@@ -98,7 +99,9 @@ export class OrganiserModal extends Modal {
     theadTrEl.createEl('th', { text: 'Name' });
     theadTrEl.createEl('th', { text: 'Move to...' });
     this.fileTbodyEl = tableEl.createEl('tbody');
+  }
 
+  createFileTableRows(): void {
     for (const file of this.files) {
       const fileTrEl = this.fileTbodyEl.createEl('tr');
 
@@ -111,8 +114,9 @@ export class OrganiserModal extends Modal {
       this.fileRowSelectEls.set(file.name, selectEl);
 
       const fileNameTd = fileTrEl.createEl('td', { text: file.name });
-      fileNameTd.onClickEvent((event: MouseEvent) => {
-        selectEl.click();
+      fileNameTd.addEventListener('click', (event: MouseEvent) => {
+        selectEl.checked = !selectEl.checked;
+        selectEl.dispatchEvent(new Event('change'));
         event.stopPropagation();
       });
 
@@ -133,7 +137,7 @@ export class OrganiserModal extends Modal {
 
     return folderSelectEl;
   }
-
+  
   handleSearch(query: string): void {
     [...this.fileRowEls.entries()].forEach(([fileName, row]) => {
       const fileNameSearch = fileName.toLowerCase();
@@ -146,21 +150,6 @@ export class OrganiserModal extends Modal {
         row.className = 'hidden';
       }
     }); 
-  }
-
-  getFolderPathForDisplay(folder: TFolder): string {
-    if (folder.parent?.path === '/') {
-      return folder.name;
-    }
-
-    const parentNames = [];
-    let parent: TFolder | null = folder.parent;
-    while (parent !== null && parent.path !== '/') {
-      parentNames.push(parent.name);
-      parent = parent.parent;
-    }
-
-    return `${folder.name} (${parentNames.reverse().join(' > ')})`;
   }
 
   handleToggleSelect(fileName: string, selected: boolean): void {
@@ -198,12 +187,12 @@ export class OrganiserModal extends Modal {
     await this.inbox.move(file, path);
 
     this.files.remove(file);
-    this.fileRowEls.get(fileName)?.remove();
-    this.fileRowEls.delete(fileName);
-    this.fileRowSelectEls.delete(fileName);
 
-    if (this.fileRowEls.size === 0) {
+    if (this.files.length === 0) {
       this.close();
+    } else {
+      this.fileTbodyEl.empty();
+      this.createFileTableRows();
     }
   }
 

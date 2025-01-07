@@ -16,13 +16,17 @@ export class Inbox {
       return [];
     }
 
-    return folder?.children.sort().filter(child => child instanceof TFile);
+    return folder.children
+      .filter(child => child instanceof TFile)
+      .sort((a, b) => a.name.localeCompare(b.name))
   }
 
   getFolders(): TFolder[] {
     const folders = this.vault.getAllFolders(false);
 
-    return folders.filter(folder => folder.path !== INBOX_FOLDER);
+    return folders
+      .filter(folder => folder.path !== INBOX_FOLDER)
+      .sort((a, b) => a.name.localeCompare(b.name));
   }
 
   async move(file: TFile, path: string): Promise<void> {
