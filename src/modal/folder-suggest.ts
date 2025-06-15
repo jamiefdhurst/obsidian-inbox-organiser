@@ -7,6 +7,7 @@ export class FolderSuggest extends AbstractInputSuggest<string> {
   constructor(app: App, folders: TFolder[], el: HTMLInputElement) {
     super(app, el);
     this.el = el;
+    this.limit = 0;
     folders.forEach(folder => {
       this.folders.add(folder.path);
     });
