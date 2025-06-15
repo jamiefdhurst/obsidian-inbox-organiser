@@ -62,6 +62,6 @@ export class OrganiserNotice {
       return;
     }
 
-    new Notice(this.getFragment());
+    new Notice(this.getFragment(), 0);
   }
 }
