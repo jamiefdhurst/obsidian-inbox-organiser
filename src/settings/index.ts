@@ -1,3 +1,5 @@
+import { TFolder } from 'obsidian';
+
 export type Period =
   | 'disabled'
   | 'daily_9am'
@@ -12,9 +14,11 @@ export type Period =
 export interface ISettings {
   inbox: boolean;
   period: Period;
+  watchFolder: string;
 }
   
 export const DEFAULT_SETTINGS: ISettings = Object.freeze({
   inbox: false,
   period: 'disabled',
+  watchFolder: '/',
 });

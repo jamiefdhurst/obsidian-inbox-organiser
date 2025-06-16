@@ -20,7 +20,7 @@ describe('Watcher', () => {
   });
 
   it('should not trigger filemanager when inbox is disabled', () => {
-    const settings: ISettings = { inbox: false, period: 'disabled' };
+    const settings: ISettings = { inbox: false, period: 'disabled', watchFolder: '/' };
     jest.spyOn(plugin, 'getSettings').mockReturnValue(settings);
     const fileManagerRenameFile = jest.spyOn(fileManager, 'renameFile');
 
@@ -30,7 +30,7 @@ describe('Watcher', () => {
   });
 
   it('should trigger filemanager when inbox is enabled', () => {
-    const settings: ISettings = { inbox: true, period: 'disabled' };
+    const settings: ISettings = { inbox: true, period: 'disabled', watchFolder: '/' };
     jest.spyOn(plugin, 'getSettings').mockReturnValue(settings);
     const fileManagerRenameFile = jest.spyOn(fileManager, 'renameFile');
 

@@ -1,13 +1,17 @@
 import { type App, PluginSettingTab, Setting } from 'obsidian';
 import { ISettings, type Period } from '.';
 import InboxOrganiser from '..';
+import { Inbox } from '../inbox';
+import { FolderSuggest } from '../modal/folder-suggest';
 
 export class InboxOrganiserTab extends PluginSettingTab {
   private plugin: InboxOrganiser;
+  private inbox: Inbox;
 
-  constructor(app: App, plugin: InboxOrganiser) {
+  constructor(app: App, plugin: InboxOrganiser, inbox: Inbox) {
     super(app, plugin);
     this.plugin = plugin;
+    this.inbox = inbox;
   }
 
   display(): void {
@@ -37,6 +41,19 @@ export class InboxOrganiserTab extends PluginSettingTab {
             await this.plugin.updateSettings(settings);
           });
       });
+    
+    const watchFolder = new Setting(this.containerEl);
+    watchFolder.setName('Watched folder')
+      .setDesc('Which folder should be monitored for new notes to intercept and add into the inbox (default root).');
+    const watchFolderEl = watchFolder.controlEl.createEl('input', { type: 'text' });
+    watchFolderEl.setAttr('value', settings.watchFolder);
+    new FolderSuggest(this.app, this.inbox.getFolders(true), watchFolderEl);
+    watchFolderEl.addEventListener('change', (event: MouseEvent) => {
+      const el = event.target as HTMLSelectElement;
+      settings.watchFolder = el.value;
+      this.plugin.updateSettings(settings);
+    });
+
     new Setting(this.containerEl)
       .setName('Reminder period')
       .setDesc('How often to send a reminder to organise your inbox.')
@@ -47,7 +64,7 @@ export class InboxOrganiserTab extends PluginSettingTab {
           .onChange(async (val) => {
             settings.period = val as Period;
             await this.plugin.updateSettings(settings);
-          })
-      })
+          });
+      });
   }
 }
