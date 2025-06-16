@@ -51,9 +51,11 @@ export class DropdownComponent extends BaseComponent {
 export class ToggleComponent extends BaseComponent {}
 export class Setting {
   public containerEl: HTMLElement;
+  public controlEl: HTMLElement;
 
   constructor(el: HTMLElement) {
     this.containerEl = el;
+    this.controlEl = el.createDiv({ cls: 'setting-item-control' });
     return this;
   }
 

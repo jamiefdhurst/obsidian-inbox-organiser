@@ -21,8 +21,8 @@ export class Inbox {
       .sort((a, b) => a.name.localeCompare(b.name))
   }
 
-  getFolders(): TFolder[] {
-    const folders = this.vault.getAllFolders(false);
+  getFolders(includeRoot: boolean = false): TFolder[] {
+    const folders = this.vault.getAllFolders(includeRoot);
 
     return folders
       .filter(folder => folder.path !== INBOX_FOLDER)
@@ -32,4 +32,4 @@ export class Inbox {
   async move(file: TFile, path: string): Promise<void> {
     return this.fileManager.renameFile(file, `${path}/${file.name}`);
   }
- }
+}

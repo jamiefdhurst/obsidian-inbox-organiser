@@ -68,7 +68,29 @@ describe('Inbox', () => {
     expect(result.length).toEqual(2);
     expect(result[0].path).toEqual('bar');
     expect(result[1].path).toEqual('foo');
+  });
 
+  it('gets all folders with root included', () => {
+    const folders = [
+      new TFolder(),
+      new TFolder(),
+      new TFolder(),
+    ];
+
+    folders[0].name = '';
+    folders[0].path = '/';
+    folders[1].name = INBOX_FOLDER;
+    folders[1].path = INBOX_FOLDER;
+    folders[2].name = 'foo';
+    folders[2].path = 'foo';
+
+    jest.spyOn(vault, 'getAllFolders').mockReturnValue(folders);
+
+    const result = sut.getFolders(true);
+
+    expect(result.length).toEqual(2);
+    expect(result[0].path).toEqual('/');
+    expect(result[1].path).toEqual('foo');
   });
 
   it('moves a file', async () => {

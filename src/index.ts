@@ -1,6 +1,7 @@
 import { Plugin, TFile, type App, type PluginManifest } from 'obsidian';
 import { SETTINGS_UPDATED } from './events';
 import { Inbox } from './inbox';
+import debug from './log';
 import { OrganiserModal } from './modal';
 import { OrganiserNotice } from './notice';
 import { DEFAULT_SETTINGS, ISettings } from './settings';
@@ -32,8 +33,18 @@ export default class InboxOrganiser extends Plugin {
 
   onLayoutReady(): void {
     this.registerEvent(this.app.vault.on('create', (file) => {
-      if (file instanceof TFile && file.path.indexOf('/') === -1) {
-        this.watcher.notify(file);
+      if (file instanceof TFile) {
+        // Root needs a special case as it will not match the start of the file path
+        if (this.settings.watchFolder === '/' && file.path.indexOf('/') === -1) {
+          this.watcher.notify(file);
+        }
+        // Ensure sub-folders are ignored correctly
+        if (
+          file.path.indexOf(this.settings.watchFolder + '/') === 0
+          && file.path.split('/').length === this.settings.watchFolder.split('/').length + 1
+        ) {
+          this.watcher.notify(file);
+        }
       }
     }));
 
@@ -42,7 +53,7 @@ export default class InboxOrganiser extends Plugin {
     }, 300000));
     (new OrganiserNotice(this, this.modal, this.inbox)).display();
 
-    this.addSettingTab(new InboxOrganiserTab(this.app, this));
+    this.addSettingTab(new InboxOrganiserTab(this.app, this, this.inbox));
 
     this.addCommand({
 			id: 'inbox-organiser',
@@ -63,17 +74,20 @@ export default class InboxOrganiser extends Plugin {
       DEFAULT_SETTINGS,
       await this.loadData()
     );
+    debug('Loaded settings: ' + JSON.stringify(this.settings));
   }
 
   async updateSettings(settings: ISettings): Promise<void> {
     this.settings = settings;
     await this.saveData(settings);
     this.onSettingsUpdate();
+    debug('Saved settings: ' + JSON.stringify(this.settings));
   }
 
   private onSettingsUpdate(): void {
     const inboxFolder = this.app.vault.getFolderByPath(INBOX_FOLDER);
     if (this.settings.inbox && !inboxFolder) {
+      debug('Creating missing inbox folder');
       this.app.vault.createFolder(INBOX_FOLDER);
     }
 
