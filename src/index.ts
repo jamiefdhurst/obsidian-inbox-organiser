@@ -8,8 +8,6 @@ import { DEFAULT_SETTINGS, ISettings } from './settings';
 import { InboxOrganiserTab } from './settings/tab';
 import { Watcher } from './watcher';
 
-export const INBOX_FOLDER = 'inbox';
-
 export default class InboxOrganiser extends Plugin {
   private settings: ISettings = DEFAULT_SETTINGS;
   private watcher: Watcher;
@@ -19,7 +17,7 @@ export default class InboxOrganiser extends Plugin {
   constructor(app: App, manifest: PluginManifest) {
     super(app, manifest);
     this.watcher = new Watcher(this, app.fileManager);
-    this.inbox = new Inbox(app.vault, app.fileManager);
+    this.inbox = new Inbox(this, app.vault, app.fileManager);
     this.modal = new OrganiserModal(this.app, this.inbox);
   }
   
@@ -85,10 +83,10 @@ export default class InboxOrganiser extends Plugin {
   }
 
   private onSettingsUpdate(): void {
-    const inboxFolder = this.app.vault.getFolderByPath(INBOX_FOLDER);
+    const inboxFolder = this.app.vault.getFolderByPath(this.settings.inboxFolder);
     if (this.settings.inbox && !inboxFolder) {
       debug('Creating missing inbox folder');
-      this.app.vault.createFolder(INBOX_FOLDER);
+      this.app.vault.createFolder(this.settings.inboxFolder);
     }
 
     this.app.workspace.trigger(SETTINGS_UPDATED);

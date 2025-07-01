@@ -18,6 +18,7 @@ describe('Settings Tab', () => {
     plugin.getSettings = jest.fn();
     inbox = jest.fn() as unknown as Inbox;
     inbox.getFolders = jest.fn();
+    inbox.getFoldersWithInbox = jest.fn();
 
     sut = new InboxOrganiserTab(app, plugin, inbox);
     sut.containerEl = createDiv();
@@ -34,12 +35,14 @@ describe('Settings Tab', () => {
     folders[0].path = '/';
     folders[1].path = 'abc';
     const inboxGetFolders = jest.spyOn(inbox, 'getFolders').mockReturnValue(folders);
+    const inboxGetFoldersWithInbox = jest.spyOn(inbox, 'getFoldersWithInbox').mockReturnValue(folders);
     const settingsSetName = jest.spyOn(Setting.prototype, 'setName');
 
     sut.display();
 
-    expect(settingsSetName).toHaveBeenCalledTimes(3);
+    expect(settingsSetName).toHaveBeenCalledTimes(4);
     expect(inboxGetFolders).toHaveBeenCalledWith(true);
+    expect(inboxGetFoldersWithInbox).toHaveBeenCalled();
   });
 
 });
