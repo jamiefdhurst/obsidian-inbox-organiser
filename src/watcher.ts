@@ -1,5 +1,5 @@
 import { FileManager, TFile } from 'obsidian';
-import InboxOrganiser, { INBOX_FOLDER } from '.';
+import InboxOrganiser from '.';
 import debug from './log';
 
 export class Watcher {
@@ -16,7 +16,7 @@ export class Watcher {
 
     if (settings.inbox) {
       debug('Moving newly created file to inbox');
-      this.fileManager.renameFile(file, `${INBOX_FOLDER}/${file.name}`);
+      this.fileManager.renameFile(file, `${settings.inboxFolder}/${file.name}`);
     }
   }
 }

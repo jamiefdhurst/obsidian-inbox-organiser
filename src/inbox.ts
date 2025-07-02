@@ -1,17 +1,20 @@
 import { FileManager, TFile, TFolder, Vault } from 'obsidian';
-import { INBOX_FOLDER } from '.';
+import InboxOrganiser from '.';
 
 export class Inbox {
+  private plugin: InboxOrganiser;
   private vault: Vault;
   private fileManager: FileManager;
 
-  constructor(vault: Vault, fileManager: FileManager) {
+  constructor(plugin: InboxOrganiser, vault: Vault, fileManager: FileManager) {
+    this.plugin = plugin;
     this.vault = vault;
     this.fileManager = fileManager;
   }
 
   getFiles(): TFile[] {
-    const folder = this.vault.getFolderByPath(INBOX_FOLDER);
+    const settings = this.plugin.getSettings();
+    const folder = this.vault.getFolderByPath(settings.inboxFolder);
     if (!folder) {
       return [];
     }
@@ -22,10 +25,18 @@ export class Inbox {
   }
 
   getFolders(includeRoot: boolean = false): TFolder[] {
+    const settings = this.plugin.getSettings();
     const folders = this.vault.getAllFolders(includeRoot);
 
     return folders
-      .filter(folder => folder.path !== INBOX_FOLDER)
+      .filter(folder => folder.path !== settings.inboxFolder)
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  getFoldersWithInbox(): TFolder[] {
+    const folders = this.vault.getAllFolders(false);
+
+    return folders
       .sort((a, b) => a.name.localeCompare(b.name));
   }
 

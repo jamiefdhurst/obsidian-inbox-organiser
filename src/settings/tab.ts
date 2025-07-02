@@ -42,6 +42,18 @@ export class InboxOrganiserTab extends PluginSettingTab {
           });
       });
     
+    const inboxFolder = new Setting(this.containerEl);
+    inboxFolder.setName('Inbox folder')
+      .setDesc('Which folder should act as your inbox for new files?');
+    const inboxFolderEl = inboxFolder.controlEl.createEl('input', { type: 'text' });
+    inboxFolderEl.setAttr('value', settings.inboxFolder);
+    new FolderSuggest(this.app, this.inbox.getFoldersWithInbox(), inboxFolderEl);
+    inboxFolderEl.addEventListener('change', (event: MouseEvent) => {
+      const el = event.target as HTMLSelectElement;
+      settings.inboxFolder = el.value;
+      this.plugin.updateSettings(settings);
+    });
+    
     const watchFolder = new Setting(this.containerEl);
     watchFolder.setName('Watched folder')
       .setDesc('Which folder should be monitored for new notes to intercept and add into the inbox (default root).');

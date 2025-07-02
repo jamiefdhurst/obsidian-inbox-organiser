@@ -1,4 +1,4 @@
-import { TFolder } from 'obsidian';
+export const DEFAULT_INBOX_FOLDER = 'inbox';
 
 export type Period =
   | 'disabled'
@@ -13,12 +13,14 @@ export type Period =
 
 export interface ISettings {
   inbox: boolean;
+  inboxFolder: string;
   period: Period;
   watchFolder: string;
 }
   
 export const DEFAULT_SETTINGS: ISettings = Object.freeze({
   inbox: false,
+  inboxFolder: DEFAULT_INBOX_FOLDER,
   period: 'disabled',
   watchFolder: '/',
 });

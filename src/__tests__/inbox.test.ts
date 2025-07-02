@@ -1,22 +1,32 @@
 import { FileManager, TFile, TFolder, Vault } from 'obsidian';
-import { INBOX_FOLDER } from '..';
+import InboxOrganiser from '..';
 import { Inbox } from '../inbox';
+import { DEFAULT_INBOX_FOLDER } from '../settings';
 
 describe('Inbox', () => {
 
   let sut: Inbox;
 
+  let plugin: InboxOrganiser;
   let vault: Vault;
   let fileManager: FileManager;
 
   beforeEach(() => {
+    plugin = jest.fn() as unknown as InboxOrganiser;
+    plugin.getSettings = jest.fn();
+    jest.spyOn(plugin, 'getSettings').mockReturnValue({
+      inbox: true,
+      inboxFolder: DEFAULT_INBOX_FOLDER,
+      period: 'disabled',
+      watchFolder: '/',
+    });
     vault = jest.fn() as unknown as Vault;
     vault.getAllFolders = jest.fn();
     vault.getFolderByPath = jest.fn();
     fileManager = jest.fn() as unknown as FileManager;
     fileManager.renameFile = jest.fn();
 
-    sut = new Inbox(vault, fileManager);
+    sut = new Inbox(plugin, vault, fileManager);
   });
 
   it('returns empty when the inbox folder is not found', () => {
@@ -56,8 +66,8 @@ describe('Inbox', () => {
 
     folders[0].name = 'foo';
     folders[0].path = 'foo';
-    folders[1].name = INBOX_FOLDER;
-    folders[1].path = INBOX_FOLDER;
+    folders[1].name = DEFAULT_INBOX_FOLDER;
+    folders[1].path = DEFAULT_INBOX_FOLDER;
     folders[2].name = 'bar';
     folders[2].path = 'bar';
 
@@ -79,8 +89,8 @@ describe('Inbox', () => {
 
     folders[0].name = '';
     folders[0].path = '/';
-    folders[1].name = INBOX_FOLDER;
-    folders[1].path = INBOX_FOLDER;
+    folders[1].name = DEFAULT_INBOX_FOLDER;
+    folders[1].path = DEFAULT_INBOX_FOLDER;
     folders[2].name = 'foo';
     folders[2].path = 'foo';
 
@@ -91,6 +101,28 @@ describe('Inbox', () => {
     expect(result.length).toEqual(2);
     expect(result[0].path).toEqual('/');
     expect(result[1].path).toEqual('foo');
+  });
+
+  it('gets all folders, including inbox, sorted', () => {
+const folders = [
+      new TFolder(),
+      new TFolder(),
+      new TFolder(),
+    ];
+
+    folders[0].name = 'foo';
+    folders[0].path = 'foo';
+    folders[1].name = DEFAULT_INBOX_FOLDER;
+    folders[1].path = DEFAULT_INBOX_FOLDER;
+    folders[2].name = 'aaaaaa';
+    folders[2].path = 'aaaaaa';
+
+    jest.spyOn(vault, 'getAllFolders').mockReturnValue(folders);
+
+    const result = sut.getFoldersWithInbox();
+
+    expect(result.length).toEqual(3);
+    expect(result[0].path).toEqual('aaaaaa');
   });
 
   it('moves a file', async () => {
