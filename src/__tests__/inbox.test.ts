@@ -103,6 +103,28 @@ describe('Inbox', () => {
     expect(result[1].path).toEqual('foo');
   });
 
+  it('gets all folders, including inbox, sorted', () => {
+const folders = [
+      new TFolder(),
+      new TFolder(),
+      new TFolder(),
+    ];
+
+    folders[0].name = 'foo';
+    folders[0].path = 'foo';
+    folders[1].name = DEFAULT_INBOX_FOLDER;
+    folders[1].path = DEFAULT_INBOX_FOLDER;
+    folders[2].name = 'aaaaaa';
+    folders[2].path = 'aaaaaa';
+
+    jest.spyOn(vault, 'getAllFolders').mockReturnValue(folders);
+
+    const result = sut.getFoldersWithInbox();
+
+    expect(result.length).toEqual(3);
+    expect(result[0].path).toEqual('aaaaaa');
+  });
+
   it('moves a file', async () => {
     const fileManagerRename = jest.spyOn(fileManager, 'renameFile');
 

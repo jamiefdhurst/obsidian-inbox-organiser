@@ -33,13 +33,14 @@ export class AbstractInputSuggest<T> {
 };
 export const Notice = jest.fn();
 class BaseComponent {
+
   onChange(cb: (val: any) => any): this {
     return this;
   }
   setDisabled(b: boolean): this {
     return this;
   }
-  setValue(s: string): this {
+  setValue(s: any): this {
     return this;
   }
 }
