@@ -18,6 +18,8 @@ Designed to work with [Obsidian](https://obsidian.md).
 
 You can configure whether to automatically move any newly created files in the root folder into the inbox, and whether to remind you through a notice periodically to organise your inbox.
 
+You can also configure the inbox folder to drop newly created items into (inbox by default) and the folder that is watched for new items (which is your vault's root by default).
+
 ## Development
 
 This plugin has been developed using Typescript with the Obsidian API and Jest for testing.
