@@ -30,14 +30,14 @@ export class Inbox {
 
     return folders
       .filter(folder => folder.path !== settings.inboxFolder)
-      .sort((a, b) => a.name.localeCompare(b.name));
+      .sort((a, b) => a.name.localeCompare(b.path));
   }
 
   getFoldersWithInbox(): TFolder[] {
     const folders = this.vault.getAllFolders(false);
 
     return folders
-      .sort((a, b) => a.name.localeCompare(b.name));
+      .sort((a, b) => a.name.localeCompare(b.path));
   }
 
   async move(file: TFile, path: string): Promise<void> {
