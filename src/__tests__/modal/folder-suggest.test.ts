@@ -40,9 +40,9 @@ describe('FolderSuggest', () => {
     expect(elDispatch).toHaveBeenCalled();
   });
 
-  it('gets suggestions', () => {
+  it('gets suggestions in the correct order', () => {
     const suggestions = sut.exposeGetSuggestions('BA');
 
-    expect(suggestions).toEqual(['foo/Bar', 'baz']);
+    expect(suggestions).toEqual(['baz', 'foo/Bar']);
   });
 });
