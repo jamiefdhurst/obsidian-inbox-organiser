@@ -39,7 +39,7 @@ export class OrganiserNotice {
       settings.period === 'daily_9am' &&
       !this.now.isBetween(
         this.now.clone().set({ hour: 9, minute: 0, second: 0 }),
-        this.now.clone().set({ hour: 9, minute: 9, second: 59 })
+        this.now.clone().set({ hour: 9, minute: 4, second: 59 })
       )
     ) {
       return;
@@ -48,7 +48,7 @@ export class OrganiserNotice {
       settings.period === 'daily_11am' &&
       !this.now.isBetween(
         this.now.clone().set({ hour: 11, minute: 0, second: 0 }),
-        this.now.clone().set({ hour: 11, minute: 9, second: 59 })
+        this.now.clone().set({ hour: 11, minute: 4, second: 59 })
       )
     ) {
       return;
@@ -57,7 +57,7 @@ export class OrganiserNotice {
       settings.period === 'daily_3pm' &&
       !this.now.isBetween(
         this.now.clone().set({ hour: 15, minute: 0, second: 0 }),
-        this.now.clone().set({ hour: 15, minute: 9, second: 59 })
+        this.now.clone().set({ hour: 15, minute: 4, second: 59 })
       )
     ) {
       return;
@@ -66,7 +66,7 @@ export class OrganiserNotice {
       settings.period === 'daily_5pm' &&
       !this.now.isBetween(
         this.now.clone().set({ hour: 17, minute: 0, second: 0 }),
-        this.now.clone().set({ hour: 17, minute: 9, second: 59 })
+        this.now.clone().set({ hour: 17, minute: 4, second: 59 })
       )
     ) {
       return;
@@ -76,7 +76,7 @@ export class OrganiserNotice {
       (this.now.format('dd') !== 'Mo' ||
         !this.now.isBetween(
           this.now.clone().set({ hour: 9, minute: 0, second: 0 }),
-          this.now.clone().set({ hour: 9, minute: 9, second: 59 })
+          this.now.clone().set({ hour: 9, minute: 4, second: 59 })
         ))
     ) {
       return;
@@ -86,7 +86,7 @@ export class OrganiserNotice {
       (this.now.format('dd') !== 'Mo' ||
         !this.now.isBetween(
           this.now.clone().set({ hour: 17, minute: 0, second: 0 }),
-          this.now.clone().set({ hour: 17, minute: 9, second: 59 })
+          this.now.clone().set({ hour: 17, minute: 4, second: 59 })
         ))
     ) {
       return;
@@ -96,7 +96,7 @@ export class OrganiserNotice {
       (this.now.format('dd') !== 'Fr' ||
         !this.now.isBetween(
           this.now.clone().set({ hour: 9, minute: 0, second: 0 }),
-          this.now.clone().set({ hour: 9, minute: 9, second: 59 })
+          this.now.clone().set({ hour: 9, minute: 4, second: 59 })
         ))
     ) {
       return;
@@ -106,7 +106,7 @@ export class OrganiserNotice {
       (this.now.format('dd') !== 'Fr' ||
         !this.now.isBetween(
           this.now.clone().set({ hour: 17, minute: 0, second: 0 }),
-          this.now.clone().set({ hour: 17, minute: 9, second: 59 })
+          this.now.clone().set({ hour: 17, minute: 4, second: 59 })
         ))
     ) {
       return;
