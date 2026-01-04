@@ -1,7 +1,7 @@
 {
   "id": "inbox-organiser",
   "name": "Inbox Organiser",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "minAppVersion": "1.6.6",
   "description": "Capture any new notes into an inbox and periodically prompt to organise these into other folders within the vault.",
   "author": "Jamie Hurst",
