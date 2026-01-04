@@ -30,7 +30,7 @@ export class Inbox {
 
     return folders
       .filter((folder) => folder.path !== settings.inboxFolder)
-      .sort((a, b) => a.name.localeCompare(b.path));
+      .sort((a, b) => a.path.localeCompare(b.path));
   }
 
   getFoldersWithInbox(): TFolder[] {
