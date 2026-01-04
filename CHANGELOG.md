@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.4] - 2026-01-04
+
+### Fixed
+
+- fix: small fix for name/path comparison for subfolders (8ccf884)
+- (5c53440)
+
+### Other
+
+- chore: release-notes script needs to run CRLF for markdown inputs (7def97b)
+
 ## [0.2.3] - 2026-01-04
 
 ### Fixed
@@ -15,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Other
 
 - chore: update build script to support better notes script (f583ea9)
+- [skip ci] Update version to v0.2.3 (f58e744)
 
 ## [0.2.2] - 2026-01-04
 
