@@ -20,8 +20,8 @@ export class Inbox {
     }
 
     return folder.children
-      .filter(child => child instanceof TFile)
-      .sort((a, b) => a.name.localeCompare(b.name))
+      .filter((child) => child instanceof TFile)
+      .sort((a, b) => a.name.localeCompare(b.name));
   }
 
   getFolders(includeRoot: boolean = false): TFolder[] {
@@ -29,15 +29,14 @@ export class Inbox {
     const folders = this.vault.getAllFolders(includeRoot);
 
     return folders
-      .filter(folder => folder.path !== settings.inboxFolder)
+      .filter((folder) => folder.path !== settings.inboxFolder)
       .sort((a, b) => a.name.localeCompare(b.path));
   }
 
   getFoldersWithInbox(): TFolder[] {
     const folders = this.vault.getAllFolders(false);
 
-    return folders
-      .sort((a, b) => a.name.localeCompare(b.path));
+    return folders.sort((a, b) => a.name.localeCompare(b.path));
   }
 
   async move(file: TFile, path: string): Promise<void> {

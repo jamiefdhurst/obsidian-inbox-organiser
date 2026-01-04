@@ -34,33 +34,35 @@ export class InboxOrganiserTab extends PluginSettingTab {
       .setName('Enable inbox')
       .setDesc('Automatically move new notes in the root folder of the vault into the inbox.')
       .addToggle((toggle) => {
-        toggle
-          .setValue(settings.inbox)
-          .onChange(async (val) => {
-            settings.inbox = val;
-            await this.plugin.updateSettings(settings);
-          });
+        toggle.setValue(settings.inbox).onChange(async (val) => {
+          settings.inbox = val;
+          await this.plugin.updateSettings(settings);
+        });
       });
-    
+
     const inboxFolder = new Setting(this.containerEl);
-    inboxFolder.setName('Inbox folder')
+    inboxFolder
+      .setName('Inbox folder')
       .setDesc('Which folder should act as your inbox for new files?');
     const inboxFolderEl = inboxFolder.controlEl.createEl('input', { type: 'text' });
     inboxFolderEl.setAttr('value', settings.inboxFolder);
     new FolderSuggest(this.app, this.inbox.getFoldersWithInbox(), inboxFolderEl);
-    inboxFolderEl.addEventListener('change', (event: MouseEvent) => {
+    inboxFolderEl.addEventListener('change', (event: Event) => {
       const el = event.target as HTMLSelectElement;
       settings.inboxFolder = el.value;
       this.plugin.updateSettings(settings);
     });
-    
+
     const watchFolder = new Setting(this.containerEl);
-    watchFolder.setName('Watched folder')
-      .setDesc('Which folder should be monitored for new notes to intercept and add into the inbox (default root).');
+    watchFolder
+      .setName('Watched folder')
+      .setDesc(
+        'Which folder should be monitored for new notes to intercept and add into the inbox (default root).'
+      );
     const watchFolderEl = watchFolder.controlEl.createEl('input', { type: 'text' });
     watchFolderEl.setAttr('value', settings.watchFolder);
     new FolderSuggest(this.app, this.inbox.getFolders(true), watchFolderEl);
-    watchFolderEl.addEventListener('change', (event: MouseEvent) => {
+    watchFolderEl.addEventListener('change', (event: Event) => {
       const el = event.target as HTMLSelectElement;
       settings.watchFolder = el.value;
       this.plugin.updateSettings(settings);

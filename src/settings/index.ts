@@ -17,7 +17,7 @@ export interface ISettings {
   period: Period;
   watchFolder: string;
 }
-  
+
 export const DEFAULT_SETTINGS: ISettings = Object.freeze({
   inbox: false,
   inboxFolder: DEFAULT_INBOX_FOLDER,

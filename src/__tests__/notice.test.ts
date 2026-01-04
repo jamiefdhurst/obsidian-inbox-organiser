@@ -6,9 +6,8 @@ import { OrganiserNotice } from '../notice';
 import { DEFAULT_SETTINGS, ISettings, Period } from '../settings';
 
 describe('OrganiserNotice', () => {
-
   let sut: OrganiserNotice;
-  
+
   let plugin: InboxOrganiser;
   let modal: Modal;
   let inbox: Inbox;
@@ -18,7 +17,7 @@ describe('OrganiserNotice', () => {
 
   beforeEach(() => {
     plugin = jest.fn() as unknown as InboxOrganiser;
-    plugin.getSettings = (jest.fn()).mockReturnValue(settings);
+    plugin.getSettings = jest.fn().mockReturnValue(settings);
     modal = jest.fn() as unknown as Modal;
     modal.open = jest.fn();
     inbox = jest.fn() as unknown as Inbox;
@@ -58,7 +57,16 @@ describe('OrganiserNotice', () => {
     const inboxGetFiles = jest.spyOn(inbox, 'getFiles');
     settings.inbox = true;
 
-    const periods: Period[] = ['daily_9am', 'daily_11am', 'daily_3pm', 'daily_5pm', 'weekly_mon_9am', 'weekly_mon_5pm', 'weekly_fri_9am', 'weekly_fri_5pm'];
+    const periods: Period[] = [
+      'daily_9am',
+      'daily_11am',
+      'daily_3pm',
+      'daily_5pm',
+      'weekly_mon_9am',
+      'weekly_mon_5pm',
+      'weekly_fri_9am',
+      'weekly_fri_5pm',
+    ];
     for (const period of periods) {
       settings.period = period;
 
@@ -72,7 +80,7 @@ describe('OrganiserNotice', () => {
     const inboxGetFiles = jest.spyOn(inbox, 'getFiles').mockReturnValue([]);
     settings.inbox = true;
     settings.period = 'daily_9am';
-    now.set({hour: 9, minute: 1, second: 1});
+    now.set({ hour: 9, minute: 1, second: 1 });
 
     sut.display();
 
@@ -84,7 +92,7 @@ describe('OrganiserNotice', () => {
     const inboxGetFiles = jest.spyOn(inbox, 'getFiles').mockReturnValue([new TFile()]);
     settings.inbox = true;
     settings.period = 'daily_9am';
-    now.set({hour: 9, minute: 1, second: 1});
+    now.set({ hour: 9, minute: 1, second: 1 });
 
     sut.display();
 
@@ -100,7 +108,7 @@ describe('OrganiserNotice', () => {
     const inboxGetFiles = jest.spyOn(inbox, 'getFiles').mockReturnValue([new TFile()]);
     settings.inbox = true;
     settings.period = 'daily_9am';
-    now.set({date: 1, month: 6, year: 2024, hour: 9, minute: 1, second: 1});
+    now.set({ date: 1, month: 6, year: 2024, hour: 9, minute: 1, second: 1 });
 
     sut.display();
 
@@ -112,7 +120,7 @@ describe('OrganiserNotice', () => {
     const inboxGetFiles = jest.spyOn(inbox, 'getFiles').mockReturnValue([]);
     settings.inbox = true;
     settings.period = 'weekly_mon_9am';
-    now.set({date: 6, month: 0, year: 2025, hour: 9, minute: 1, second: 1});
+    now.set({ date: 6, month: 0, year: 2025, hour: 9, minute: 1, second: 1 });
 
     sut.display();
 
@@ -123,10 +131,10 @@ describe('OrganiserNotice', () => {
     const inboxGetFiles = jest.spyOn(inbox, 'getFiles').mockReturnValue([]);
     settings.inbox = true;
     settings.period = 'weekly_mon_5pm';
-    now.set({date: 6, month: 0, year: 2025, hour: 17, minute: 1, second: 1});
-    
+    now.set({ date: 6, month: 0, year: 2025, hour: 17, minute: 1, second: 1 });
+
     sut.display();
-    
+
     expect(inboxGetFiles).toHaveBeenCalled();
   });
 
@@ -134,7 +142,7 @@ describe('OrganiserNotice', () => {
     const inboxGetFiles = jest.spyOn(inbox, 'getFiles').mockReturnValue([]);
     settings.inbox = true;
     settings.period = 'weekly_mon_5pm';
-    now.set({date: 7, month: 0, year: 2025, hour: 17, minute: 1, second: 1});
+    now.set({ date: 7, month: 0, year: 2025, hour: 17, minute: 1, second: 1 });
 
     sut.display();
 
@@ -145,7 +153,7 @@ describe('OrganiserNotice', () => {
     const inboxGetFiles = jest.spyOn(inbox, 'getFiles').mockReturnValue([]);
     settings.inbox = true;
     settings.period = 'weekly_fri_9am';
-    now.set({date: 3, month: 0, year: 2025, hour: 9, minute: 1, second: 1});
+    now.set({ date: 3, month: 0, year: 2025, hour: 9, minute: 1, second: 1 });
 
     sut.display();
 
@@ -156,10 +164,10 @@ describe('OrganiserNotice', () => {
     const inboxGetFiles = jest.spyOn(inbox, 'getFiles').mockReturnValue([]);
     settings.inbox = true;
     settings.period = 'weekly_fri_5pm';
-    now.set({date: 3, month: 0, year: 2025, hour: 17, minute: 1, second: 1});
-    
+    now.set({ date: 3, month: 0, year: 2025, hour: 17, minute: 1, second: 1 });
+
     sut.display();
-    
+
     expect(inboxGetFiles).toHaveBeenCalled();
   });
 
@@ -167,11 +175,10 @@ describe('OrganiserNotice', () => {
     const inboxGetFiles = jest.spyOn(inbox, 'getFiles').mockReturnValue([]);
     settings.inbox = true;
     settings.period = 'weekly_fri_5pm';
-    now.set({date: 7, month: 0, year: 2025, hour: 17, minute: 1, second: 1});
+    now.set({ date: 7, month: 0, year: 2025, hour: 17, minute: 1, second: 1 });
 
     sut.display();
 
     expect(inboxGetFiles).not.toHaveBeenCalled();
   });
-
 });

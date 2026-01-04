@@ -8,18 +8,13 @@ class FolderSuggestTestable extends FolderSuggest {
 }
 
 describe('FolderSuggest', () => {
-
   let sut: FolderSuggestTestable;
 
   let el: HTMLInputElement;
 
   beforeEach(() => {
     const app = jest.fn() as unknown as App;
-    const folders = [
-      new TFolder(),
-      new TFolder(),
-      new TFolder(),
-    ];
+    const folders = [new TFolder(), new TFolder(), new TFolder()];
     folders[0].path = 'foo';
     folders[1].path = 'foo/Bar';
     folders[2].path = 'baz';
@@ -47,8 +42,7 @@ describe('FolderSuggest', () => {
 
   it('gets suggestions', () => {
     const suggestions = sut.exposeGetSuggestions('BA');
-    
+
     expect(suggestions).toEqual(['foo/Bar', 'baz']);
   });
-
 });
