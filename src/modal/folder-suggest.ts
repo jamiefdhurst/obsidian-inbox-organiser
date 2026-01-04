@@ -8,7 +8,7 @@ export class FolderSuggest extends AbstractInputSuggest<string> {
     super(app, el);
     this.el = el;
     this.limit = 0;
-    folders.forEach(folder => {
+    folders.forEach((folder) => {
       this.folders.add(folder.path);
     });
   }
@@ -16,7 +16,7 @@ export class FolderSuggest extends AbstractInputSuggest<string> {
   protected getSuggestions(query: string): string[] {
     query = query.toLocaleLowerCase();
 
-    return [...this.folders].filter(path => path.toLocaleLowerCase().contains(query));
+    return [...this.folders].filter((path) => path.toLocaleLowerCase().contains(query));
   }
 
   renderSuggestion(value: string, el: HTMLElement): void {

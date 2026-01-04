@@ -20,7 +20,7 @@ export default class InboxOrganiser extends Plugin {
     this.inbox = new Inbox(this, app.vault, app.fileManager);
     this.modal = new OrganiserModal(this.app, this.inbox);
   }
-  
+
   async onload(): Promise<void> {
     this.updateSettings = this.updateSettings.bind(this);
 
@@ -30,36 +30,40 @@ export default class InboxOrganiser extends Plugin {
   }
 
   onLayoutReady(): void {
-    this.registerEvent(this.app.vault.on('create', (file) => {
-      if (file instanceof TFile) {
-        // Root needs a special case as it will not match the start of the file path
-        if (this.settings.watchFolder === '/' && file.path.indexOf('/') === -1) {
-          this.watcher.notify(file);
+    this.registerEvent(
+      this.app.vault.on('create', (file) => {
+        if (file instanceof TFile) {
+          // Root needs a special case as it will not match the start of the file path
+          if (this.settings.watchFolder === '/' && file.path.indexOf('/') === -1) {
+            this.watcher.notify(file);
+          }
+          // Ensure sub-folders are ignored correctly
+          if (
+            file.path.indexOf(this.settings.watchFolder + '/') === 0 &&
+            file.path.split('/').length === this.settings.watchFolder.split('/').length + 1
+          ) {
+            this.watcher.notify(file);
+          }
         }
-        // Ensure sub-folders are ignored correctly
-        if (
-          file.path.indexOf(this.settings.watchFolder + '/') === 0
-          && file.path.split('/').length === this.settings.watchFolder.split('/').length + 1
-        ) {
-          this.watcher.notify(file);
-        }
-      }
-    }));
+      })
+    );
 
-    this.registerInterval(window.setInterval(() => {
-      (new OrganiserNotice(this, this.modal, this.inbox)).display();
-    }, 300000));
-    (new OrganiserNotice(this, this.modal, this.inbox)).display();
+    this.registerInterval(
+      window.setInterval(() => {
+        new OrganiserNotice(this, this.modal, this.inbox).display();
+      }, 300000)
+    );
+    new OrganiserNotice(this, this.modal, this.inbox).display();
 
     this.addSettingTab(new InboxOrganiserTab(this.app, this, this.inbox));
 
     this.addCommand({
-			id: 'inbox-organiser',
-			name: 'Organise inbox',
-			callback: () => {
-				this.modal.open();
-			}
-		});
+      id: 'inbox-organiser',
+      name: 'Organise inbox',
+      callback: () => {
+        this.modal.open();
+      },
+    });
   }
 
   getSettings(): ISettings {
@@ -67,11 +71,7 @@ export default class InboxOrganiser extends Plugin {
   }
 
   async loadSettings(): Promise<void> {
-    this.settings = Object.assign(
-      {},
-      DEFAULT_SETTINGS,
-      await this.loadData()
-    );
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
     debug('Loaded settings: ' + JSON.stringify(this.settings));
   }
 

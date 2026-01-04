@@ -6,16 +6,16 @@ export const CLS_PREFIX: string = 'inorg-';
 
 export class OrganiserModal extends Modal {
   private inbox: Inbox;
-  private files: TFile[];
-  private folders: TFolder[];
+  private files: TFile[] = [];
+  private folders: TFolder[] = [];
 
-  private searchInputEl: HTMLInputElement;
-  private multiSelectToggleEl: HTMLInputElement;
-  private multiSelectFolderEl: HTMLInputElement;
-  private multiSelectSaveEl: HTMLButtonElement;
-  private fileTbodyEl: HTMLTableSectionElement;
-  private fileRowEls: Map<string, HTMLTableRowElement>;
-  private fileRowSelectEls: Map<string, HTMLInputElement>;
+  private searchInputEl: HTMLInputElement = createEl('input');
+  private multiSelectToggleEl: HTMLInputElement = createEl('input');
+  private multiSelectFolderEl: HTMLInputElement = createEl('input');
+  private multiSelectSaveEl: HTMLButtonElement = createEl('button');
+  private fileTbodyEl: HTMLTableSectionElement = createEl('tbody');
+  private fileRowEls: Map<string, HTMLTableRowElement> = new Map();
+  private fileRowSelectEls: Map<string, HTMLInputElement> = new Map();
 
   constructor(app: App, inbox: Inbox) {
     super(app);
@@ -24,7 +24,6 @@ export class OrganiserModal extends Modal {
   }
 
   async onOpen(): Promise<void> {
-
     this.getData();
 
     this.setTitle('Organise inbox');
@@ -37,7 +36,7 @@ export class OrganiserModal extends Modal {
   }
 
   createLayout(containerEl: HTMLElement): void {
-    const mainContainerEl = containerEl.createDiv({ cls: `${CLS_PREFIX}container`});
+    const mainContainerEl = containerEl.createDiv({ cls: `${CLS_PREFIX}container` });
     mainContainerEl.setAttribute('id', `${CLS_PREFIX}main`);
 
     this.fileRowEls = new Map();
@@ -53,16 +52,21 @@ export class OrganiserModal extends Modal {
 
   createFilter(containerEl: HTMLElement): void {
     const searchContainerEl = containerEl.createDiv({ cls: `${CLS_PREFIX}search` });
-    this.searchInputEl = searchContainerEl.createEl('input', { type: 'search', placeholder: 'Search...' });
+    this.searchInputEl = searchContainerEl.createEl('input', {
+      type: 'search',
+      placeholder: 'Search...',
+    });
     this.searchInputEl.spellcheck = false;
     this.searchInputEl.focus();
     this.searchInputEl.addEventListener('input', () => this.handleSearch(this.searchInputEl.value));
 
-    searchContainerEl.createEl('div', { cls: 'search-input-clear-button' }).addEventListener('click', () => {
-      this.searchInputEl.value = '';
-      this.searchInputEl.focus();
-      this.handleSearch(this.searchInputEl.value);
-    });
+    searchContainerEl
+      .createEl('div', { cls: 'search-input-clear-button' })
+      .addEventListener('click', () => {
+        this.searchInputEl.value = '';
+        this.searchInputEl.focus();
+        this.handleSearch(this.searchInputEl.value);
+      });
   }
 
   createMultiSelect(containerEl: HTMLElement): void {
@@ -72,15 +76,18 @@ export class OrganiserModal extends Modal {
 
     const multiSelectLabelEl = topNavLeftEl.createEl('label', { cls: `${CLS_PREFIX}multiselect` });
     this.multiSelectToggleEl = multiSelectLabelEl.createEl('input', { type: 'checkbox' });
-    multiSelectLabelEl.createSpan({ text: 'Select all/none '});
-    this.multiSelectToggleEl.addEventListener('change', (event: MouseEvent) => {
+    multiSelectLabelEl.createSpan({ text: 'Select all/none ' });
+    this.multiSelectToggleEl.addEventListener('change', (event: Event) => {
       const el = event.target as HTMLInputElement;
       this.handleToggleSelectMulti(el.checked);
     });
 
     this.multiSelectFolderEl = this.createFolderSelect(topNavRightEl);
     this.multiSelectFolderEl.setAttribute('disabled', 'disabled');
-    this.multiSelectSaveEl = topNavRightEl.createEl('button', { cls: 'mod-cta', text: 'Move selected' });
+    this.multiSelectSaveEl = topNavRightEl.createEl('button', {
+      cls: 'mod-cta',
+      text: 'Move selected',
+    });
     this.multiSelectSaveEl.setAttribute('disabled', 'disabled');
     this.multiSelectSaveEl.addEventListener('click', () => {
       if (this.multiSelectFolderEl.value) {
@@ -90,9 +97,7 @@ export class OrganiserModal extends Modal {
   }
 
   createFileTable(containerEl: HTMLElement): void {
-    const tableEl = containerEl
-      .createDiv({ cls: `${CLS_PREFIX}files`})
-      .createEl('table');
+    const tableEl = containerEl.createDiv({ cls: `${CLS_PREFIX}files` }).createEl('table');
     const theadEl = tableEl.createEl('thead');
     const theadTrEl = theadEl.createEl('tr');
     theadTrEl.createEl('th');
@@ -107,7 +112,7 @@ export class OrganiserModal extends Modal {
 
       const selectTdEl = fileTrEl.createEl('td');
       const selectEl = selectTdEl.createEl('input', { type: 'checkbox' });
-      selectEl.addEventListener('change', (event: MouseEvent) => {
+      selectEl.addEventListener('change', (event: Event) => {
         const el = event.target as HTMLInputElement;
         this.handleToggleSelect(file.name, el.checked);
       });
@@ -122,7 +127,7 @@ export class OrganiserModal extends Modal {
 
       const moveTdEl = fileTrEl.createEl('td');
       const moveSelectEl = this.createFolderSelect(moveTdEl);
-      moveSelectEl.addEventListener('change', (event: MouseEvent) => {
+      moveSelectEl.addEventListener('change', (event: Event) => {
         const el = event.target as HTMLSelectElement;
         this.handleMoveSingleFile(file.name, el.value);
       });
@@ -132,12 +137,12 @@ export class OrganiserModal extends Modal {
   }
 
   createFolderSelect(containerEl: HTMLElement): HTMLInputElement {
-    const folderSelectEl = containerEl.createEl('input', { cls: `${CLS_PREFIX}dropdown`});
+    const folderSelectEl = containerEl.createEl('input', { cls: `${CLS_PREFIX}dropdown` });
     new FolderSuggest(this.app, this.folders, folderSelectEl);
 
     return folderSelectEl;
   }
-  
+
   handleSearch(query: string): void {
     [...this.fileRowEls.entries()].forEach(([fileName, row]) => {
       const fileNameSearch = fileName.toLowerCase();
@@ -149,7 +154,7 @@ export class OrganiserModal extends Modal {
         }
         row.className = 'hidden';
       }
-    }); 
+    });
   }
 
   handleToggleSelect(fileName: string, selected: boolean): void {
@@ -163,7 +168,7 @@ export class OrganiserModal extends Modal {
       }
     }
 
-    if ([...this.fileRowEls.values()].filter(row => row.className === 'selected').length) {
+    if ([...this.fileRowEls.values()].filter((row) => row.className === 'selected').length) {
       this.multiSelectFolderEl.removeAttribute('disabled');
       this.multiSelectSaveEl.removeAttribute('disabled');
     } else {
@@ -173,13 +178,13 @@ export class OrganiserModal extends Modal {
   }
 
   handleToggleSelectMulti(selected: boolean): void {
-    for (const fileName of this.files.map(file => file.name)) {
+    for (const fileName of this.files.map((file) => file.name)) {
       this.handleToggleSelect(fileName, selected);
     }
   }
 
   async handleMoveSingleFile(fileName: string, path: string): Promise<void> {
-    const file = this.files.find(f => f.name === fileName);
+    const file = this.files.find((f) => f.name === fileName);
     if (file === undefined || path === '') {
       return;
     }
@@ -198,9 +203,11 @@ export class OrganiserModal extends Modal {
 
   async handleMoveMultipleFiles(path: string): Promise<void> {
     const moveActions: Promise<void>[] = [];
-    [...this.fileRowEls.entries()].filter(([fileName, row]) => row.className === 'selected').forEach(([fileName, row]) => {
-      moveActions.push(this.handleMoveSingleFile(fileName, path));
-    });
+    [...this.fileRowEls.entries()]
+      .filter(([fileName, row]) => row.className === 'selected')
+      .forEach(([fileName, row]) => {
+        moveActions.push(this.handleMoveSingleFile(fileName, path));
+      });
 
     await Promise.all(moveActions);
 

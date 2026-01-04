@@ -4,7 +4,6 @@ import { Inbox } from '../inbox';
 import { DEFAULT_INBOX_FOLDER } from '../settings';
 
 describe('Inbox', () => {
-
   let sut: Inbox;
 
   let plugin: InboxOrganiser;
@@ -39,11 +38,7 @@ describe('Inbox', () => {
 
   it('returns inbox folder contents, sorted, when found - files only', () => {
     const folder = new TFolder();
-    folder.children = [
-      new TFile(),
-      new TFolder(),
-      new TFile(),
-    ];
+    folder.children = [new TFile(), new TFolder(), new TFile()];
     folder.children[0].name = 'file_2.md';
     folder.children[1].name = 'folder';
     folder.children[2].name = 'file_1.md';
@@ -58,11 +53,7 @@ describe('Inbox', () => {
   });
 
   it('gets all folders that are not the inbox, sorted', () => {
-    const folders = [
-      new TFolder(),
-      new TFolder(),
-      new TFolder(),
-    ];
+    const folders = [new TFolder(), new TFolder(), new TFolder()];
 
     folders[0].name = 'foo';
     folders[0].path = 'foo';
@@ -81,11 +72,7 @@ describe('Inbox', () => {
   });
 
   it('gets all folders with root included', () => {
-    const folders = [
-      new TFolder(),
-      new TFolder(),
-      new TFolder(),
-    ];
+    const folders = [new TFolder(), new TFolder(), new TFolder()];
 
     folders[0].name = '';
     folders[0].path = '/';
@@ -104,11 +91,7 @@ describe('Inbox', () => {
   });
 
   it('gets all folders, including inbox, sorted', () => {
-const folders = [
-      new TFolder(),
-      new TFolder(),
-      new TFolder(),
-    ];
+    const folders = [new TFolder(), new TFolder(), new TFolder()];
 
     folders[0].name = 'foo';
     folders[0].path = 'foo';

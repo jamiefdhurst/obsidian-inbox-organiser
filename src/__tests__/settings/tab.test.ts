@@ -7,7 +7,6 @@ import { InboxOrganiserTab } from '../../settings/tab';
 const WAIT_TIME: number = 20;
 
 describe('Settings Tab', () => {
-
   let app: App;
   let plugin: InboxOrganiser;
   let inbox: Inbox;
@@ -38,7 +37,9 @@ describe('Settings Tab', () => {
     folders[0].path = '/';
     folders[1].path = 'abc';
     const inboxGetFolders = jest.spyOn(inbox, 'getFolders').mockReturnValue(folders);
-    const inboxGetFoldersWithInbox = jest.spyOn(inbox, 'getFoldersWithInbox').mockReturnValue(folders);
+    const inboxGetFoldersWithInbox = jest
+      .spyOn(inbox, 'getFoldersWithInbox')
+      .mockReturnValue(folders);
     const settingsSetName = jest.spyOn(Setting.prototype, 'setName');
 
     sut.display();
@@ -58,14 +59,18 @@ describe('Settings Tab', () => {
     const pluginUpdateSettings = jest.spyOn(plugin, 'updateSettings');
 
     sut.display();
-    const inputEl = sut.containerEl.find('.setting-item-control:nth-child(2) input') as HTMLInputElement;
+    const inputEl = sut.containerEl.find(
+      '.setting-item-control:nth-child(2) input'
+    ) as HTMLInputElement;
     inputEl.value = 'abc';
     inputEl.dispatchEvent(new Event('change'));
-    await new Promise(r => setTimeout(r, WAIT_TIME));
+    await new Promise((r) => setTimeout(r, WAIT_TIME));
 
-    expect(pluginUpdateSettings).toHaveBeenCalledWith(Object.assign({}, DEFAULT_SETTINGS, {
-      inboxFolder: 'abc',
-    }));
+    expect(pluginUpdateSettings).toHaveBeenCalledWith(
+      Object.assign({}, DEFAULT_SETTINGS, {
+        inboxFolder: 'abc',
+      })
+    );
   });
 
   it('updates watch folder setting when changed', async () => {
@@ -78,14 +83,17 @@ describe('Settings Tab', () => {
     const pluginUpdateSettings = jest.spyOn(plugin, 'updateSettings');
 
     sut.display();
-    const inputEl = sut.containerEl.find('.setting-item-control:nth-child(3) input') as HTMLInputElement;
+    const inputEl = sut.containerEl.find(
+      '.setting-item-control:nth-child(3) input'
+    ) as HTMLInputElement;
     inputEl.value = 'abc';
     inputEl.dispatchEvent(new Event('change'));
-    await new Promise(r => setTimeout(r, WAIT_TIME));
+    await new Promise((r) => setTimeout(r, WAIT_TIME));
 
-    expect(pluginUpdateSettings).toHaveBeenCalledWith(Object.assign({}, DEFAULT_SETTINGS, {
-      watchFolder: 'abc',
-    }));
+    expect(pluginUpdateSettings).toHaveBeenCalledWith(
+      Object.assign({}, DEFAULT_SETTINGS, {
+        watchFolder: 'abc',
+      })
+    );
   });
-
 });

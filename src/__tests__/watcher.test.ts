@@ -4,7 +4,6 @@ import { DEFAULT_INBOX_FOLDER, ISettings } from '../settings';
 import { Watcher } from '../watcher';
 
 describe('Watcher', () => {
-
   let sut: Watcher;
 
   let plugin: InboxOrganiser;
@@ -20,7 +19,12 @@ describe('Watcher', () => {
   });
 
   it('should not trigger filemanager when inbox is disabled', () => {
-    const settings: ISettings = { inbox: false, inboxFolder: DEFAULT_INBOX_FOLDER, period: 'disabled', watchFolder: '/' };
+    const settings: ISettings = {
+      inbox: false,
+      inboxFolder: DEFAULT_INBOX_FOLDER,
+      period: 'disabled',
+      watchFolder: '/',
+    };
     jest.spyOn(plugin, 'getSettings').mockReturnValue(settings);
     const fileManagerRenameFile = jest.spyOn(fileManager, 'renameFile');
 
@@ -30,7 +34,12 @@ describe('Watcher', () => {
   });
 
   it('should trigger filemanager when inbox is enabled', () => {
-    const settings: ISettings = { inbox: true, inboxFolder: DEFAULT_INBOX_FOLDER, period: 'disabled', watchFolder: '/' };
+    const settings: ISettings = {
+      inbox: true,
+      inboxFolder: DEFAULT_INBOX_FOLDER,
+      period: 'disabled',
+      watchFolder: '/',
+    };
     jest.spyOn(plugin, 'getSettings').mockReturnValue(settings);
     const fileManagerRenameFile = jest.spyOn(fileManager, 'renameFile');
 
@@ -38,5 +47,4 @@ describe('Watcher', () => {
 
     expect(fileManagerRenameFile).toHaveBeenCalled();
   });
-
 });
