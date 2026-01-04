@@ -25,7 +25,7 @@ extract_notes() {
 
         # Collect lines if we're in the section
         if [[ $in_section == true ]]; then
-            notes+="$line"$'\n'
+            notes+="$line"$'\r\n'
         fi
     done < "$CHANGELOG"
 
