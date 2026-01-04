@@ -16,7 +16,7 @@ export class FolderSuggest extends AbstractInputSuggest<string> {
   protected getSuggestions(query: string): string[] {
     query = query.toLocaleLowerCase();
 
-    return [...this.folders].filter((path) => path.toLocaleLowerCase().contains(query));
+    return [...this.folders].filter((path) => path.toLocaleLowerCase().contains(query)).sort();
   }
 
   renderSuggestion(value: string, el: HTMLElement): void {
