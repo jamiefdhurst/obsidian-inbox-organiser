@@ -181,4 +181,15 @@ describe('OrganiserNotice', () => {
 
     expect(inboxGetFiles).not.toHaveBeenCalled();
   });
+
+  it('does nothing for Fri 5pm when just beyond five minute window', () => {
+    const inboxGetFiles = jest.spyOn(inbox, 'getFiles').mockReturnValue([]);
+    settings.inbox = true;
+    settings.period = 'weekly_fri_5pm';
+    now.set({ date: 3, month: 0, year: 2025, hour: 17, minute: 5, second: 0 });
+
+    sut.display();
+
+    expect(inboxGetFiles).not.toHaveBeenCalled();
+  });
 });
