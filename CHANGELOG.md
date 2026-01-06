@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.5] - 2026-01-06
+
+### Fixed
+
+- fix: log format should be JH:IO (4136b3e)
+- (779a400)
+
+### Other
+
+- chore(deps-dev): bump the typescript-eslint group with 2 updates (c31a36e)
+- (84f7b04)
+
 ## [0.2.4] - 2026-01-04
 
 ### Fixed
@@ -15,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Other
 
 - chore: release-notes script needs to run CRLF for markdown inputs (7def97b)
+- [skip ci] Update version to v0.2.4 (85edd6d)
 
 ## [0.2.3] - 2026-01-04
 
