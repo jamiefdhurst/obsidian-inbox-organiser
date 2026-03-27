@@ -18,6 +18,9 @@ updates:
     ignore:
       # Keep Obsidian at current version - controlled via package.json overrides
       - dependency-name: "obsidian"
+      # Prevent major version upgrades for TypeScript until tooling (ts-jest etc.) catches up
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
     groups:
       # Group all TypeScript/ESLint related updates
       typescript-eslint:
