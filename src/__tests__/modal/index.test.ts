@@ -44,7 +44,7 @@ describe('OrganiserModal', () => {
     jest.spyOn(inbox, 'getFiles').mockReturnValue([]);
     jest.spyOn(inbox, 'getFolders').mockReturnValue([]);
 
-    await sut.onOpen();
+    sut.onOpen();
 
     const select = sut.contentEl.find(`.${CLS_PREFIX}top .${CLS_PREFIX}dropdown`);
     expect(select).toBeInstanceOf(HTMLInputElement);
@@ -58,7 +58,7 @@ describe('OrganiserModal', () => {
     jest.spyOn(inbox, 'getFiles').mockReturnValue(fixtureFiles);
     jest.spyOn(inbox, 'getFolders').mockReturnValue(fixtureFolders);
 
-    await sut.onOpen();
+    sut.onOpen();
 
     const selectEl = sut.contentEl.find(`.${CLS_PREFIX}top .${CLS_PREFIX}dropdown`);
     expect(selectEl).toBeInstanceOf(HTMLInputElement);
@@ -74,7 +74,7 @@ describe('OrganiserModal', () => {
     jest.spyOn(inbox, 'getFiles').mockReturnValue(fixtureFiles);
     jest.spyOn(inbox, 'getFolders').mockReturnValue(fixtureFolders);
 
-    await sut.onOpen();
+    sut.onOpen();
 
     const searchInputEl = sut.contentEl.find(`.${CLS_PREFIX}search input`) as HTMLInputElement;
     const tableEl = sut.contentEl.find(`.${CLS_PREFIX}files table`);
@@ -121,7 +121,7 @@ describe('OrganiserModal', () => {
     jest.spyOn(inbox, 'getFiles').mockReturnValue(fixtureFiles);
     jest.spyOn(inbox, 'getFolders').mockReturnValue(fixtureFolders);
 
-    await sut.onOpen();
+    sut.onOpen();
 
     const topEl = sut.contentEl.find(`.${CLS_PREFIX}top`);
     const tableEl = sut.contentEl.find(`.${CLS_PREFIX}files table`);
@@ -143,7 +143,7 @@ describe('OrganiserModal', () => {
     jest.spyOn(inbox, 'getFiles').mockReturnValue(fixtureFiles);
     jest.spyOn(inbox, 'getFolders').mockReturnValue(fixtureFolders);
 
-    await sut.onOpen();
+    sut.onOpen();
 
     const topEl = sut.contentEl.find(`.${CLS_PREFIX}top`);
     const tableEl = sut.contentEl.find(`.${CLS_PREFIX}files table`);
@@ -176,7 +176,7 @@ describe('OrganiserModal', () => {
     jest.spyOn(inbox, 'getFolders').mockReturnValue(fixtureFolders);
     const inboxMove = jest.spyOn(inbox, 'move');
 
-    await sut.onOpen();
+    sut.onOpen();
 
     const tableEl = sut.contentEl.find(`.${CLS_PREFIX}files table`);
     tableEl.children[1].children[0].children[2].children[0].dispatchEvent(new Event('change'));
@@ -191,7 +191,7 @@ describe('OrganiserModal', () => {
     jest.spyOn(inbox, 'getFolders').mockReturnValue(fixtureFolders);
     const inboxMove = jest.spyOn(inbox, 'move');
 
-    await sut.onOpen();
+    sut.onOpen();
 
     const expectedFile = fixtureFiles[0];
     const tableEl = sut.contentEl.find(`.${CLS_PREFIX}files table`);
@@ -209,7 +209,7 @@ describe('OrganiserModal', () => {
     jest.spyOn(inbox, 'getFolders').mockReturnValue(fixtureFolders);
     const inboxMove = jest.spyOn(inbox, 'move');
 
-    await sut.onOpen();
+    sut.onOpen();
 
     const expectedFile1 = fixtureFiles[0];
     const expectedFile2 = fixtureFiles[0];
@@ -235,7 +235,7 @@ describe('OrganiserModal', () => {
     jest.spyOn(inbox, 'getFiles').mockReturnValue(fixtureFiles);
     jest.spyOn(inbox, 'getFolders').mockReturnValue(fixtureFolders);
 
-    await sut.onOpen();
+    sut.onOpen();
 
     sut.onClose();
 

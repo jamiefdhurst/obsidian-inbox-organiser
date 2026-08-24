@@ -4,6 +4,7 @@ export const moment = momentImpl;
 export class Plugin {}
 export class PluginSettingTab {}
 export class Modal {
+  public modalEl: HTMLElement = createDiv();
   close() {
     this.onClose();
   }

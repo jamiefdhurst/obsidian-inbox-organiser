@@ -1,4 +1,4 @@
-# Inbox Organiser for Obsidian
+# Inbox Organiser
 
 Capture any new notes into an inbox and periodically prompt to organise these into other folders within the vault.
 

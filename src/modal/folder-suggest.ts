@@ -23,7 +23,7 @@ export class FolderSuggest extends AbstractInputSuggest<string> {
     el.setText(value);
   }
 
-  selectSuggestion(value: string, evt: MouseEvent | KeyboardEvent): void {
+  selectSuggestion(value: string, _evt: MouseEvent | KeyboardEvent): void {
     this.el.value = value;
     this.el.dispatchEvent(new Event('change'));
     this.close();
