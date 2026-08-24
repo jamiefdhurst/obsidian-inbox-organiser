@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-08-24
+
+### Added
+
+- feat: adopt the declarative settings API and clear the CSS findings (585e84f)
+
+### Fixed
+
+- fix: clear the community directory scan findings (4021619)
+- (c3ce2b6)
+
+### Other
+
+- chore(deps-dev): bump brace-expansion from 1.1.12 to 1.1.18 (f460414)
+- (959d444)
+- Merge branch 'main' into test/remove-jest-environment-obsidian (513708c)
+
+### Testing
+
+- test: remove archived jest-environment-obsidian and complete the DOM shim (2b08cbb)
+- test: use obsidian's own global declarations in the shim test (09ad2d6)
+- (47cc5cf)
+
 ## [0.2.6] - 2026-08-24
 
 ### Fixed
@@ -199,6 +222,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - chore(deps-dev): bump esbuild from 0.28.1 to 0.28.2 (dd98fe5)
 - (ef1953b)
 - chore: reduce dependabot volume with monthly cadence and single dev group (5371755)
+- [skip ci] Update version to v0.2.6 (cf2bf76)
 
 ## [0.2.5] - 2026-01-06
 
