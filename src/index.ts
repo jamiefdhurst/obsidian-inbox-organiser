@@ -9,7 +9,9 @@ import { InboxOrganiserTab } from './settings/tab';
 import { Watcher } from './watcher';
 
 export default class InboxOrganiser extends Plugin {
-  private settings: ISettings = DEFAULT_SETTINGS;
+  // Public and narrowed to ISettings, as the base class expects since 1.13.0.
+  // Reads elsewhere still go through getSettings()
+  settings: ISettings = DEFAULT_SETTINGS;
   private watcher: Watcher;
   private inbox: Inbox;
   private modal: OrganiserModal;
@@ -55,7 +57,7 @@ export default class InboxOrganiser extends Plugin {
     );
     new OrganiserNotice(this, this.modal, this.inbox).display();
 
-    this.addSettingTab(new InboxOrganiserTab(this.app, this, this.inbox));
+    this.addSettingTab(new InboxOrganiserTab(this.app, this));
 
     this.addCommand({
       // Obsidian namespaces this with the plugin ID, so it must not repeat it

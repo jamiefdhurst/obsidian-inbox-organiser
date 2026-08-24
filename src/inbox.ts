@@ -33,12 +33,6 @@ export class Inbox {
       .sort((a, b) => a.path.localeCompare(b.path));
   }
 
-  getFoldersWithInbox(): TFolder[] {
-    const folders = this.vault.getAllFolders(false);
-
-    return folders.sort((a, b) => a.name.localeCompare(b.path));
-  }
-
   async move(file: TFile, path: string): Promise<void> {
     return this.fileManager.renameFile(file, `${path}/${file.name}`);
   }

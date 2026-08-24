@@ -26,6 +26,9 @@ export class OrganiserModal extends Modal {
   onOpen(): void {
     this.getData();
 
+    // Lets styles.css target this modal by class rather than with :has
+    this.modalEl.addClass(`${CLS_PREFIX}modal`);
+
     this.setTitle('Organise inbox');
     this.createLayout(this.contentEl);
   }
