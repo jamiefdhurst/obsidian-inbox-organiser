@@ -1,14 +1,36 @@
-function _createEl(
-  tag: string,
-  info?: { cls?: string; text?: string; type?: string; attr?: Record<string, string> },
-  callback?: (el: HTMLElement) => void
-): HTMLElement {
-  const el = document.createElement(tag);
-  if (info?.cls) el.className = info.cls;
+type ElInfo = { cls?: string; text?: string; type?: string; attr?: Record<string, string> };
+
+// Obsidian accepts either a bare class name or an info object wherever an
+// info argument is taken, so normalise the string form up front
+function _normaliseInfo(info?: string | ElInfo): ElInfo | undefined {
+  return typeof info === 'string' ? { cls: info } : info;
+}
+
+function _applyInfo(el: Element, info?: ElInfo, callback?: (el: any) => void): void {
+  if (info?.cls) el.setAttribute('class', info.cls);
   if (info?.text) el.textContent = info.text;
   if (info?.type && el instanceof HTMLInputElement) el.type = info.type;
   if (info?.attr) Object.entries(info.attr).forEach(([k, v]) => el.setAttribute(k, v));
   if (callback) callback(el);
+}
+
+function _createEl(
+  tag: string,
+  info?: string | ElInfo,
+  callback?: (el: HTMLElement) => void
+): HTMLElement {
+  const el = document.createElement(tag);
+  _applyInfo(el, _normaliseInfo(info), callback);
+  return el;
+}
+
+function _createSvg(
+  tag: string,
+  info?: string | ElInfo,
+  callback?: (el: SVGElement) => void
+): SVGElement {
+  const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  _applyInfo(el, _normaliseInfo(info), callback);
   return el;
 }
 
@@ -16,6 +38,8 @@ function _createEl(
 (globalThis as any).createEl = _createEl;
 (globalThis as any).createDiv = (info?: any, callback?: any) => _createEl('div', info, callback);
 (globalThis as any).createSpan = (info?: any, callback?: any) => _createEl('span', info, callback);
+(globalThis as any).createSvg = (tag: string, info?: any, callback?: any) =>
+  _createSvg(tag, info, callback);
 
 // Node prototype extensions
 (Node.prototype as any).createEl = function (tag: any, info?: any, callback?: any) {
@@ -28,6 +52,11 @@ function _createEl(
 };
 (Node.prototype as any).createSpan = function (info?: any, callback?: any) {
   return (this as any).createEl('span', info, callback);
+};
+(Node.prototype as any).createSvg = function (tag: string, info?: any, callback?: any) {
+  const el = _createSvg(tag, info, callback);
+  this.appendChild(el);
+  return el;
 };
 (Node.prototype as any).empty = function () {
   while (this.firstChild) this.removeChild(this.firstChild);
