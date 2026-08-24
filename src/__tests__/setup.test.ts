@@ -1,9 +1,4 @@
-declare const createSvg: (
-  tag: string,
-  info?: any,
-  callback?: (el: SVGElement) => void
-) => SVGElement;
-declare const createDiv: (info?: any, callback?: (el: HTMLElement) => void) => HTMLElement;
+// createEl/createDiv/createSvg are declared globally by obsidian's own types
 
 describe('Obsidian DOM shim', () => {
   describe('createSvg', () => {
@@ -27,7 +22,7 @@ describe('Obsidian DOM shim', () => {
     it('appends to the parent when called on a node', () => {
       const parent = createDiv();
 
-      const el = (parent as any).createSvg('svg', 'icon');
+      const el = parent.createSvg('svg', 'icon');
 
       expect(parent.children).toHaveLength(1);
       expect(parent.children[0]).toBe(el);
@@ -45,7 +40,7 @@ describe('Obsidian DOM shim', () => {
     it('is treated as a class name by createEl on a node', () => {
       const parent = createDiv();
 
-      const el = (parent as any).createEl('span', 'my-class');
+      const el = parent.createEl('span', 'my-class');
 
       expect(el.className).toEqual('my-class');
       expect(parent.children[0]).toBe(el);

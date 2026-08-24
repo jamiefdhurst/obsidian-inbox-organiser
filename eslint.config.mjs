@@ -37,6 +37,8 @@ export default [
         // Obsidian globals
         createDiv: false,
         createEl: false,
+        createSpan: false,
+        createSvg: false,
       },
     },
     plugins: {
