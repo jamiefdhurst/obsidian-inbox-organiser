@@ -1,7 +1,10 @@
-import { type Moment } from 'moment';
 import { Modal, moment, Notice } from 'obsidian';
 import InboxOrganiser from '.';
 import { Inbox } from './inbox';
+
+// Obsidian bundles moment, so the type comes from its export rather than a
+// direct dependency on the moment package
+type Moment = ReturnType<typeof moment>;
 
 export class OrganiserNotice {
   private plugin: InboxOrganiser;
@@ -19,11 +22,11 @@ export class OrganiserNotice {
   private getFragment(): DocumentFragment {
     const fragment = new DocumentFragment();
 
-    fragment.createEl('span', {
+    fragment.createSpan({
       text: 'This is a reminder to organise all the files within your inbox folder: click ',
     });
     fragment.createEl('a', { text: 'here' }).addEventListener('click', () => this.modal.open());
-    fragment.createEl('span', { text: ' to get started.' });
+    fragment.createSpan({ text: ' to get started.' });
 
     return fragment;
   }

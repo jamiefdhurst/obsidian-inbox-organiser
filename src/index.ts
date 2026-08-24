@@ -58,7 +58,8 @@ export default class InboxOrganiser extends Plugin {
     this.addSettingTab(new InboxOrganiserTab(this.app, this, this.inbox));
 
     this.addCommand({
-      id: 'inbox-organiser',
+      // Obsidian namespaces this with the plugin ID, so it must not repeat it
+      id: 'organise',
       name: 'Organise inbox',
       callback: () => {
         this.modal.open();
@@ -86,7 +87,7 @@ export default class InboxOrganiser extends Plugin {
     const inboxFolder = this.app.vault.getFolderByPath(this.settings.inboxFolder);
     if (this.settings.inbox && !inboxFolder) {
       debug('Creating missing inbox folder');
-      this.app.vault.createFolder(this.settings.inboxFolder);
+      void this.app.vault.createFolder(this.settings.inboxFolder);
     }
 
     this.app.workspace.trigger(SETTINGS_UPDATED);

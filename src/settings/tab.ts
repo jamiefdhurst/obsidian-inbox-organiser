@@ -50,7 +50,7 @@ export class InboxOrganiserTab extends PluginSettingTab {
     inboxFolderEl.addEventListener('change', (event: Event) => {
       const el = event.target as HTMLSelectElement;
       settings.inboxFolder = el.value;
-      this.plugin.updateSettings(settings);
+      void this.plugin.updateSettings(settings);
     });
 
     const watchFolder = new Setting(this.containerEl);
@@ -65,7 +65,7 @@ export class InboxOrganiserTab extends PluginSettingTab {
     watchFolderEl.addEventListener('change', (event: Event) => {
       const el = event.target as HTMLSelectElement;
       settings.watchFolder = el.value;
-      this.plugin.updateSettings(settings);
+      void this.plugin.updateSettings(settings);
     });
 
     new Setting(this.containerEl)

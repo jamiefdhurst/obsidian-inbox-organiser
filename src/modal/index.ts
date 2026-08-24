@@ -23,7 +23,7 @@ export class OrganiserModal extends Modal {
     this.inbox = inbox;
   }
 
-  async onOpen(): Promise<void> {
+  onOpen(): void {
     this.getData();
 
     this.setTitle('Organise inbox');
@@ -61,7 +61,7 @@ export class OrganiserModal extends Modal {
     this.searchInputEl.addEventListener('input', () => this.handleSearch(this.searchInputEl.value));
 
     searchContainerEl
-      .createEl('div', { cls: 'search-input-clear-button' })
+      .createDiv({ cls: 'search-input-clear-button' })
       .addEventListener('click', () => {
         this.searchInputEl.value = '';
         this.searchInputEl.focus();
@@ -91,7 +91,7 @@ export class OrganiserModal extends Modal {
     this.multiSelectSaveEl.setAttribute('disabled', 'disabled');
     this.multiSelectSaveEl.addEventListener('click', () => {
       if (this.multiSelectFolderEl.value) {
-        this.handleMoveMultipleFiles(this.multiSelectFolderEl.value);
+        void this.handleMoveMultipleFiles(this.multiSelectFolderEl.value);
       }
     });
   }
@@ -129,7 +129,7 @@ export class OrganiserModal extends Modal {
       const moveSelectEl = this.createFolderSelect(moveTdEl);
       moveSelectEl.addEventListener('change', (event: Event) => {
         const el = event.target as HTMLSelectElement;
-        this.handleMoveSingleFile(file.name, el.value);
+        void this.handleMoveSingleFile(file.name, el.value);
       });
 
       this.fileRowEls.set(file.name, fileTrEl);
@@ -204,8 +204,8 @@ export class OrganiserModal extends Modal {
   async handleMoveMultipleFiles(path: string): Promise<void> {
     const moveActions: Promise<void>[] = [];
     [...this.fileRowEls.entries()]
-      .filter(([fileName, row]) => row.className === 'selected')
-      .forEach(([fileName, row]) => {
+      .filter(([, row]) => row.className === 'selected')
+      .forEach(([fileName]) => {
         moveActions.push(this.handleMoveSingleFile(fileName, path));
       });
 
